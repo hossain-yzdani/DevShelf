@@ -1,0 +1,66 @@
+import { User } from "@/types/User";
+
+const mockUsers: User[] = [
+  {
+    id: "1",
+    username: "admin",
+    email: "admin@devshelf.ir",
+    fullName: "مدیر سیستم",
+    role: "admin",
+    status: "active",
+    createdAt: new Date().toISOString(),
+    lastLogin: new Date().toISOString(),
+  },
+  {
+    id: "2",
+    username: "ali_rezaei",
+    email: "ali@devshelf.ir",
+    fullName: "علی رضایی",
+    role: "editor",
+    status: "active",
+    createdAt: new Date().toISOString(),
+    lastLogin: new Date(Date.now() - 86400000).toISOString(),
+  },
+  {
+    id: "3",
+    username: "maryam_h",
+    email: "maryam@devshelf.ir",
+    fullName: "مریم حسینی",
+    role: "editor",
+    status: "active",
+    createdAt: new Date().toISOString(),
+    lastLogin: new Date(Date.now() - 172800000).toISOString(),
+  },
+  {
+    id: "4",
+    username: "mr_karimi",
+    email: "karimi@devshelf.ir",
+    fullName: "محمدرضا کریمی",
+    role: "user",
+    status: "inactive",
+    createdAt: new Date().toISOString(),
+    lastLogin: new Date(Date.now() - 259200000).toISOString(),
+  },
+  {
+    id: "5",
+    username: "sara_mohammadi",
+    email: "sara@devshelf.ir",
+    fullName: "سارا محمدی",
+    role: "user",
+    status: "active",
+    createdAt: new Date().toISOString(),
+    lastLogin: new Date(Date.now() - 43200000).toISOString(),
+  },
+  {
+    id: "6",
+    username: "ahmad_nouri",
+    email: "ahmad@devshelf.ir",
+    fullName: "احمد نوری",
+    role: "user",
+    status: "banned",
+    createdAt: new Date().toISOString(),
+    lastLogin: new Date(Date.now() - 604800000).toISOString(),
+  },
+];
+
+export default mockUsers;

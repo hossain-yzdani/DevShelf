@@ -1,0 +1,37 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { ResourcesService } from './resources.service';
+import { CreateResourceDto } from './dto/create-resource.dto';
+import { UpdateResourceDto } from './dto/update-resource.dto';
+
+@Controller('resources')
+export class ResourcesController {
+  constructor(private readonly resourcesService: ResourcesService) {}
+
+  @Post()
+  create(@Body() createResourceDto: CreateResourceDto) {
+    return this.resourcesService.create(createResourceDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.resourcesService.findAll();
+  }
+
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.resourcesService.findOne(slug);
+  }
+
+  @Patch(':slug')
+  update(
+    @Param('slug') slug: string,
+    @Body() updateResourceDto: UpdateResourceDto,
+  ) {
+    return this.resourcesService.update(slug, updateResourceDto);
+  }
+
+  @Delete(':slug')
+  remove(@Param('slug') slug: string) {
+    return this.resourcesService.remove(slug);
+  }
+}

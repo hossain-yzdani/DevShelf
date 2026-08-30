@@ -1,0 +1,1 @@
+export const STAR_ICON_ID = "5453969572354878595";
