@@ -14,6 +14,7 @@ import {
 import { FavoritesService } from './favorites.service';
 // import { AuthGuard } from '../auth/auth.guard';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
+import { BotAuthGuard } from '../auth/guards/botAuth.guard';
 
 @Controller('favorites')
 // @UseGuards(AuthGuard)
@@ -45,20 +46,25 @@ export class FavoritesController {
     return this.favoritesService.removeFavorite(id);
   }
 
-  @Get('my/:username')
-  async getMyFavorites(@Param('username') username: string) {
-    return this.favoritesService.getMyFavorites(username);
+  @Get('my/:telegramId')
+  async getMyFavorites(@Param('telegramId', new ParseIntPipe()) telegramId: number) {
+    return this.favoritesService.getMyFavorites(telegramId);
   }
 
+  @UseGuards(BotAuthGuard)
   @Post('check/:slug')
   async checkFavorite(
     @Body('telegramId', new ParseIntPipe()) telegramId: number,
     @Param('slug') slug: string,
   ) {
-    const isFavorited = await this.favoritesService.isFavorited(telegramId, slug);
+    const isFavorited = await this.favoritesService.isFavorited(
+      telegramId,
+      slug,
+    );
     return { isFavorited };
   }
 
+  @UseGuards(BotAuthGuard)
   @Post('toggle')
   @HttpCode(HttpStatus.OK)
   async toggleFavorite(

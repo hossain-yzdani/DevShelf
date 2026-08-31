@@ -16,7 +16,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(createAuthDto) {
+  async registerBot(createAuthDto) {
     try {
       const user = await this.usersService.findForAuth(createAuthDto.username);
       if (user) {
@@ -60,11 +60,17 @@ export class AuthService {
       }
       const payload = { sub: user.id, username: user.username };
       const accessToken = await this.jwtService.signAsync(payload);
+      // res.cookie('access_token', token, {
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV === 'production',
+      //   sameSite: 'lax',
+      // });
       return {
         accessToken,
         user: {
           id: user.id,
           username: user.username,
+          role: user.role,
         },
       };
     } catch (error) {

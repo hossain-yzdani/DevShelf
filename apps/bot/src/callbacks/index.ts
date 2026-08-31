@@ -4,12 +4,14 @@ import { registerCategoryCallbacks } from "./categories";
 import { registerResourceCallbacks } from "./resource";
 import { mainKeyboard } from "../keyboards/main.keyboard";
 import { registerTagCalbacks } from "./tags.";
+import { registerFavoriteCallbacks } from "./favorites";
 
 export function registerCallbacks(bot: Bot) {
 
   registerCategoryCallbacks(bot);
   registerResourceCallbacks(bot);
   registerTagCalbacks(bot);
+  registerFavoriteCallbacks(bot);
   
   const message =
     "🔙 <b>Back to Main Menu</b>\n\n" +
@@ -59,18 +61,6 @@ export function registerCallbacks(bot: Bot) {
     await ctx.editMessageText(
       "⭐ **Popular Resources**\n\n" +
         "Fetching popular resources...\n\n" +
-        "⚠️ This section will be available soon.",
-      {
-        reply_markup: backKeyboard,
-        parse_mode: "Markdown",
-      },
-    );
-  });
-
-  bot.callbackQuery("favorites", async (ctx) => {
-    await ctx.editMessageText(
-      "❤️ **Your Favorites**\n\n" +
-        "Fetching your favorites...\n\n" +
         "⚠️ This section will be available soon.",
       {
         reply_markup: backKeyboard,

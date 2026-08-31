@@ -13,7 +13,7 @@ export const mainKeyboard = new InlineKeyboard()
   .text("⭐ Populars", "popular")
   .success()
   .row()
-  .text("❤️ Favorites", "favorites")
+  .text("❤️ Favorites", "myFavorites")
   .danger()
   .text("📥 My downloads", "downloads");
 

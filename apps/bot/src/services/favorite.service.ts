@@ -22,6 +22,11 @@ export class FavoriteService {
       const response = await client.post<{ isFavorited: boolean }>(
         "/favorites/toggle",
         { resourceSlug: slug, telegramId: telegramId },
+        {
+          headers: {
+            'x-telegram-id': telegramId.toString()
+          }
+        }
       );
       return response.data;
     } catch (error) {
@@ -43,20 +48,21 @@ export class FavoriteService {
     }
   }
 
-  static async getFavorites(userId: string): Promise<any[]> {
+  static async getFavorites(telegramId: number): Promise<any[]> {
     try {
       const client = this.getClient();
-      const response = await client.get<any[]>("/favorites", {
+      const response = await client.get<any[]>(`/favorites/my/${telegramId}`, {
         headers: {
-          "X-User-Id": userId,
+          "x-telegram-id": telegramId.toString(),
         },
       });
       return response.data;
+      
     } catch (error) {
       if (axios.isAxiosError(error)) {
         logger.error(
           {
-            userId,
+            telegramId,
             status: error.response?.status,
             data: error.response?.data,
             message: error.message,
@@ -64,7 +70,7 @@ export class FavoriteService {
           "Failed to fetch favorites",
         );
       } else {
-        logger.error({ userId, error }, "Failed to fetch favorites");
+        logger.error({ telegramId, error }, "Failed to fetch favorites");
       }
       throw error;
     }
@@ -76,6 +82,11 @@ export class FavoriteService {
       const response = await client.post<{ isFavorited: boolean }>(
         `/favorites/check/${slug}`,
         { telegramId },
+        {
+          headers: {
+            "x-telegram-id": telegramId.toString(),
+          },
+        },
       ); 
       return response.data.isFavorited;
     } catch (error) {
@@ -97,30 +108,30 @@ export class FavoriteService {
     }
   }
 
-  static async removeFavorite(slug: string, userId: string): Promise<void> {
-    try {
-      const client = this.getClient();
-      await client.delete(`/favorites/${slug}`, {
-        headers: {
-          "X-User-Id": userId,
-        },
-      });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        logger.error(
-          {
-            slug,
-            userId,
-            status: error.response?.status,
-            data: error.response?.data,
-            message: error.message,
-          },
-          "Failed to remove favorite",
-        );
-      } else {
-        logger.error({ slug, userId, error }, "Failed to remove favorite");
-      }
-      throw error;
-    }
-  }
+  // static async removeFavorite(slug: string, userId: string): Promise<void> {
+  //   try {
+  //     const client = this.getClient();
+  //     await client.delete(`/favorites/${slug}`, {
+  //       headers: {
+  //         "X-User-Id": userId,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       logger.error(
+  //         {
+  //           slug,
+  //           userId,
+  //           status: error.response?.status,
+  //           data: error.response?.data,
+  //           message: error.message,
+  //         },
+  //         "Failed to remove favorite",
+  //       );
+  //     } else {
+  //       logger.error({ slug, userId, error }, "Failed to remove favorite");
+  //     }
+  //     throw error;
+  //   }
+  // }
 }

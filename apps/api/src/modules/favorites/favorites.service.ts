@@ -95,12 +95,27 @@ export class FavoritesService {
     }
   }
 
-  async getMyFavorites(username: string) {
-    const user = await this.usersService.findOne(username);
+  async getMyFavorites(telegramId: number) {
+    const user = await this.usersService.findOneByTelegramId(telegramId);
     if (!user) {
       throw new NotFoundException('User was not found');
     }
-    return user;
+
+    const favorites = await this.favoritesRepository.find({
+      where: { user: { id: user.id } },
+      relations: {
+        user: true,
+        resource: {
+          category: true,
+          tags: true,
+        },
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return favorites;
   }
 
   async isFavorited(telegramId: number, slug: string): Promise<boolean> {
