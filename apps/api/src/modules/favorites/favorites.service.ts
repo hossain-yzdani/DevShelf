@@ -103,9 +103,9 @@ export class FavoritesService {
     return user;
   }
 
-  async isFavorited(username: string, slug: string): Promise<boolean> {
+  async isFavorited(telegramId: number, slug: string): Promise<boolean> {
     try {
-      const user = await this.usersService.findOne(username);
+      const user = await this.usersService.findOneByTelegramId(telegramId);
       if (!user) {
         return false;
       }

@@ -76,7 +76,7 @@ export class FavoriteService {
       const response = await client.post<{ isFavorited: boolean }>(
         `/favorites/check/${slug}`,
         { telegramId },
-      );
+      ); 
       return response.data.isFavorited;
     } catch (error) {
       if (axios.isAxiosError(error)) {

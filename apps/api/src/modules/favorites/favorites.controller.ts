@@ -52,10 +52,10 @@ export class FavoritesController {
 
   @Post('check/:slug')
   async checkFavorite(
-    @Body('username') username: string,
+    @Body('telegramId', new ParseIntPipe()) telegramId: number,
     @Param('slug') slug: string,
   ) {
-    const isFavorited = await this.favoritesService.isFavorited(username, slug);
+    const isFavorited = await this.favoritesService.isFavorited(telegramId, slug);
     return { isFavorited };
   }
 
