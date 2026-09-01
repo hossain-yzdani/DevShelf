@@ -9,49 +9,9 @@ export function registerCategoryCallbacks(bot: Bot) {
       const categories = await CategoryService.getAll();
 
       if (!categories || categories.length === 0) {
-        await ctx.editMessageText("📂 **Categories**\n\nNo categories found.", {
-          reply_markup: backKeyboard,
-          parse_mode: "Markdown",
-        });
-        return;
-      }
-
-      const keyboard = new InlineKeyboard();
-
-      for (const cat of categories) {
-        keyboard.text(`📂 ${cat.name}`, `category_${cat.slug}`).success().row();
-      }
-
-      keyboard.text("↩️ Back", "back");
-
-      await ctx.editMessageText(
-        `📂 **Categories**\n\nTotal: ${categories.length} categories available.`,
-        {
-          reply_markup: keyboard,
-          parse_mode: "Markdown",
-        },
-      );
-    } catch (error) {
-      await ctx.editMessageText(
-        "❌ **Error**\n\nFailed to load categories. Please try again later.",
-        {
-          reply_markup: backKeyboard,
-          parse_mode: "Markdown",
-        },
-      );
-    }
-  });
-
-  bot.callbackQuery(/^category_(.+)$/, async (ctx) => {
-    const categoryId = ctx.match[1];
-
-    try {
-      const resources =
-        await CategoryService.getResourcesByCategory(categoryId);
-
-      if (!resources || resources.length === 0) {
         await ctx.editMessageText(
-          "📂 **Category Resources**\n\nNo resources found in this category.",
+          "📂 **Categories**\n\nNo categories found.\n\n" +
+            "💡 Please check back later or contact support.",
           {
             reply_markup: backKeyboard,
             parse_mode: "Markdown",
@@ -61,28 +21,111 @@ export function registerCategoryCallbacks(bot: Bot) {
       }
 
       const keyboard = new InlineKeyboard();
-      
 
-      for (const resource of resources.slice(0, 10)) {
-        keyboard.text(`📌 ${resource.name}`, `view_${resource.slug}`).primary().row();
+      for (let i = 0; i < categories.length; i += 2) {
+        const cat1 = categories[i];
+        const cat2 = categories[i + 1];
+
+        if (cat2) {
+          keyboard
+            .text(`📂 ${cat1.name}`, `category_${cat1.slug}`)
+            .success()
+            .text(`📂 ${cat2.name}`, `category_${cat2.slug}`)
+            .success()
+            .row();
+        } else {
+          keyboard
+            .text(`📂 ${cat1.name}`, `category_${cat1.slug}`)
+            .success()
+            .row();
+        }
       }
 
-      keyboard.text("↩️ Back to Categories", "categories").row();
-      // keyboard.text("↩️ Main Menu", "back").row();
+      keyboard.text("↩️ Back", "back");
 
       await ctx.editMessageText(
-        `📂 **Category Resources**\n\n` +
-          `Showing ${Math.min(resources.length, 10)} of ${resources.length} resources.`,
+        `📂 **Categories**\n\n` +
+          `📊 Total: ${categories.length} categories available.\n\n` +
+          `Browse through our collection by selecting a category below.\n` +
+          `Each category contains curated resources for you.`,
         {
           reply_markup: keyboard,
           parse_mode: "Markdown",
         },
       );
     } catch (error) {
-      await ctx.editMessageText("❌ **Error**\n\nFailed to load resources.", {
-        reply_markup: backKeyboard,
-        parse_mode: "Markdown",
-      });
+      await ctx.editMessageText(
+        "❌ **Error**\n\n" +
+          "Failed to load categories. Please try again later.\n\n" +
+          "💡 If the problem persists, contact support.",
+        {
+          reply_markup: backKeyboard,
+          parse_mode: "Markdown",
+        },
+      );
+    }
+  });
+
+  bot.callbackQuery(/^category_(.+)$/, async (ctx) => {
+    const categorySlug = ctx.match[1];
+
+    try {
+      const resources =
+        await CategoryService.getResourcesByCategory(categorySlug);
+
+      if (!resources || resources.length === 0) {
+        await ctx.editMessageText(
+          "📂 **Category Resources**\n\n" +
+            "No resources found in this category.\n\n" +
+            "💡 Try browsing other categories or check back later.",
+          {
+            reply_markup: backKeyboard,
+            parse_mode: "Markdown",
+          },
+        );
+        return;
+      }
+
+      const keyboard = new InlineKeyboard();
+
+      for (let i = 0; i < resources.slice(0, 10).length; i += 2) {
+        const res1 = resources.slice(0, 10)[i];
+        const res2 = resources.slice(0, 10)[i + 1];
+
+        if (res2) {
+          keyboard
+            .text(`📌 ${res1.name}`, `view_${res1.slug}`)
+            .primary()
+            .text(`📌 ${res2.name}`, `view_${res2.slug}`)
+            .primary()
+            .row();
+        } else {
+          keyboard.text(`📌 ${res1.name}`, `view_${res1.slug}`).primary().row();
+        }
+      }
+
+      keyboard.text("↩️ Back to Categories", "categories").row();
+
+      await ctx.editMessageText(
+        `📂 **Category Resources**\n\n` +
+          `📊 Showing ${Math.min(resources.length, 10)} of ${resources.length} resources.\n\n` +
+          `Click on any resource below to view details.\n` +
+          `Each resource includes description, author, and download option.`,
+        {
+          reply_markup: keyboard,
+          parse_mode: "Markdown",
+        },
+      );
+    } catch (error) {
+      await ctx.editMessageText(
+        "❌ **Error**\n\n" +
+          "Failed to load resources.\n\n" +
+          "💡 Please try again later.",
+        {
+          reply_markup: backKeyboard,
+          parse_mode: "Markdown",
+        },
+      );
     }
   });
 }

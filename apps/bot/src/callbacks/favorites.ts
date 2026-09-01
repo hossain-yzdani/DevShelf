@@ -35,7 +35,7 @@ export function registerFavoriteCallbacks(bot: Bot) {
 
       for (const fav of favorites.slice(0, 10)) {
         const resource: Resource = fav.resource;
-        keyboard.text(`📌 ${resource.name}`, `view_${resource.slug}`).row();
+        keyboard.text(`❤️ ${resource.name}`, `view_${resource.slug}`).row();
       }
 
       if (favorites.length > 10) {

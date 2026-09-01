@@ -5,7 +5,6 @@ import { Resource, ResourceType } from "../types/resource.type";
 import { Readable } from "node:stream";
 import { FileService } from "../services/file.service";
 import { buildResourceKeyboard } from "../keyboards/resource.keyboard";
-import axios from "axios";
 import { FavoriteService } from "../services/favorite.service";
 
 export function registerResourceCallbacks(bot: Bot) {
@@ -46,7 +45,7 @@ export function registerResourceCallbacks(bot: Bot) {
 
   bot.callbackQuery(/^download_(.+)$/, async (ctx) => {
     const slug = ctx.match[1];
-    const userId = ctx.from?.id;
+    const telegramId = ctx.from?.id;
 
     try {
       await ctx.answerCallbackQuery("⏳ Preparing file...");
@@ -63,7 +62,7 @@ export function registerResourceCallbacks(bot: Bot) {
 
       const fileName =
         resource.fileUrl.split("/").pop() || `${resource.slug}.pdf`;
-      const fileBuffer = await FileService.downloadFile(resource.fileUrl);
+      const fileBuffer = await FileService.downloadFile(telegramId, resource);
       const inputFile = new InputFile(fileBuffer, fileName);
 
       logger.info(
@@ -81,14 +80,14 @@ export function registerResourceCallbacks(bot: Bot) {
         parse_mode: "HTML",
       });
 
-      logger.info({ userId, slug }, "📥 File sent successfully");
+      logger.info({ telegramId, slug }, "📥 File sent successfully");
       await ctx.answerCallbackQuery("✅ File sent!");
     } catch (error: any) {
       console.dir(error, { depth: null });
       logger.error(
         {
           slug,
-          userId,
+          telegramId,
           error,
           message: error?.message,
           description: error?.description,

@@ -54,23 +54,44 @@ export class DownloadsService {
 
   async download(createDownloadDto: CreateDownloadDto) {
     try {
-      const { resourceSlug, username } = createDownloadDto;
+      const { resourceSlug, telegramId } = createDownloadDto;
       const resource = await this.resourcesService.findOne(resourceSlug);
-      const user = await this.usersService.findOne(username);
+      const user = await this.usersService.findOneByTelegramId(telegramId);
 
-      const dowonload = this.downloadsRepository.create({
+      const existingDownload = await this.downloadsRepository.findOne({
+        where: {
+          user: { id: user.id },
+          resource: { id: resource.id },
+        },
+      });
+
+      if (existingDownload) {
+        return {
+          message: 'Already downloaded',
+          downloadUrl: resource.fileUrl,
+          downloadedAt: existingDownload.downloadedAt,
+        };
+      }
+
+      const download = this.downloadsRepository.create({
         resource,
         user,
       });
 
-      return await this.downloadsRepository.save(dowonload);
+      await this.downloadsRepository.save(download);
+
+      return {
+        message: 'Download recorded successfully',
+        downloadUrl: resource.fileUrl,
+        downloadedAt: new Date(),
+      };
     } catch (error) {
-      throw new InternalServerErrorException('Download Faild');
+      throw new InternalServerErrorException('Download failed');
     }
   }
 
-  async getMyDownloads(username: string) {
-    const user = await this.usersService.findOne(username);
+  async getMyDownloads(telegramID: number) {
+    const user = await this.usersService.findOneByTelegramId(telegramID);
     if (!user) {
       throw new NotFoundException('User was not found');
     }

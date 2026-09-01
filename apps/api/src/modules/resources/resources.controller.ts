@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
@@ -16,10 +25,21 @@ export class ResourcesController {
   findAll() {
     return this.resourcesService.findAll();
   }
+  
+  @Get('popular')
+  async getPopular(@Query('limit') limit?: string) {
+    const limitNumber = limit ? parseInt(limit, 10) : 10;
+    return this.resourcesService.getPopular(limitNumber);
+  }
 
   @Get(':slug')
   findOne(@Param('slug') slug: string) {
     return this.resourcesService.findOne(slug);
+  }
+
+  @Get('/id/:id')
+  findOneById(@Param('id') id: string) {
+    return this.resourcesService.findOneById(id);
   }
 
   @Patch(':slug')

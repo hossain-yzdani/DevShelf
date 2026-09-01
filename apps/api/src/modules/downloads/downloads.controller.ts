@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { CreateDownloadDto } from './dto/create-download.dto';
 import { DownloadsService } from './downloads.service';
+import { BotAuthGuard } from '../auth/guards/botAuth.guard';
 
 @Controller('downloads')
 export class DownloadsController {
@@ -21,13 +22,15 @@ export class DownloadsController {
     return await this.downloadsService.getResource(slug);
   }
 
+  @UseGuards(BotAuthGuard)
   @Post()
   async create(@Body() createDownloadDto: CreateDownloadDto) {
     return await this.downloadsService.download(createDownloadDto);
   }
 
-  @Get('users/:username')
-  async findBy(@Param('username') username: string) {
-    return await this.downloadsService.getMyDownloads(username);
+  // @UseGuards(BotAuthGuard)
+  @Get('users/:telegramID')
+  async findBy(@Param('telegramID', new ParseIntPipe()) telegramID: number) {
+    return await this.downloadsService.getMyDownloads(telegramID);
   }
 }

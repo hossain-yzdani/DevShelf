@@ -15,6 +15,6 @@ export const mainKeyboard = new InlineKeyboard()
   .row()
   .text("❤️ Favorites", "myFavorites")
   .danger()
-  .text("📥 My downloads", "downloads");
+  .text("📥 My downloads", "myDownloads");
 
 export const backKeyboard = new InlineKeyboard().text("↩️ Return", "back");

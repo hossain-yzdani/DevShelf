@@ -64,6 +64,22 @@ export class ResourcesService {
     return ResourceMapper.toResponseDto(resource);
   }
 
+  async findOneById(id: string): Promise<ResourceResponseDto> {
+    const resource = await this.resourceRepository.findOne({
+      where: { id },
+      relations: {
+        category: true,
+        tags: true,
+        favorites: true,
+        downloads: true,
+      },
+    });
+    if (!resource) {
+      throw new NotFoundException('Resource was not found');
+    }
+    return ResourceMapper.toResponseDto(resource);
+  }
+
   async update(
     slug: string,
     updateResourceDto: UpdateResourceDto,
@@ -108,5 +124,20 @@ export class ResourcesService {
       throw new NotFoundException('Resource was not found');
     }
     await this.resourceRepository.remove(resource);
+  }
+
+  async getPopular(limit: number = 10): Promise<Resource[]> {
+    return this.resourceRepository
+      .createQueryBuilder('resource')
+      .leftJoinAndSelect('resource.category', 'category')
+      .leftJoinAndSelect('resource.tags', 'tags')
+      .leftJoin('resource.favorites', 'favorite')
+      .addSelect('COUNT(favorite.id)', 'favoritesCount')
+      .groupBy('resource.id')
+      .addGroupBy('category.id')
+      .addGroupBy('tags.id')
+      .orderBy('COUNT(favorite.id)', 'DESC')
+      .limit(limit)
+      .getMany();
   }
 }

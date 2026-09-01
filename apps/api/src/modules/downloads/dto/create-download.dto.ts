@@ -2,7 +2,7 @@ import { IsString } from 'class-validator';
 
 export class CreateDownloadDto {
   @IsString()
-  username!: string;
+  telegramId!: number;
 
   @IsString()
   resourceSlug!: string;

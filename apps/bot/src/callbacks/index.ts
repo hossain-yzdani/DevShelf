@@ -3,15 +3,19 @@ import { backKeyboard } from "../keyboards/main.keyboard";
 import { registerCategoryCallbacks } from "./categories";
 import { registerResourceCallbacks } from "./resource";
 import { mainKeyboard } from "../keyboards/main.keyboard";
-import { registerTagCalbacks } from "./tags.";
+import { registerTagCallbacks } from "./tags";
 import { registerFavoriteCallbacks } from "./favorites";
+import { registerDownloadCallbacks } from "./download";
+import { registerPopularCallbacks } from "./popular";
 
 export function registerCallbacks(bot: Bot) {
 
   registerCategoryCallbacks(bot);
   registerResourceCallbacks(bot);
-  registerTagCalbacks(bot);
+  registerTagCallbacks(bot);
   registerFavoriteCallbacks(bot);
+  registerDownloadCallbacks(bot);
+  registerPopularCallbacks(bot);
   
   const message =
     "🔙 <b>Back to Main Menu</b>\n\n" +
@@ -69,15 +73,4 @@ export function registerCallbacks(bot: Bot) {
     );
   });
 
-  bot.callbackQuery("downloads", async (ctx) => {
-    await ctx.editMessageText(
-      "📥 **Your Downloads**\n\n" +
-        "Fetching your downloads...\n\n" +
-        "⚠️ This section will be available soon.",
-      {
-        reply_markup: backKeyboard,
-        parse_mode: "Markdown",
-      },
-    );
-  });
 }
