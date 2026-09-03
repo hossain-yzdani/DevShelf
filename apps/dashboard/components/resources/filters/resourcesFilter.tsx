@@ -1,7 +1,7 @@
 import { CustomSelect } from "@/components/ui/customSelect/customSelect";
-import { Resource }from "@/types/Resource";
 import { Grid3x3, List, Search } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
+import { Resource } from "../../../../../packages/types/resource.type";
 
 interface TProps {
   viewMode: string;
@@ -11,17 +11,7 @@ interface TProps {
   setSearchQuery: Dispatch<SetStateAction<string>>;
 
   selectedType: string;
-  setSelectedType: Dispatch<
-    SetStateAction<
-      | "ALL"
-      | "BOOK"
-      | "COURSE"
-      | "ARTICLE"
-      | "CHEATSHEET"
-      | "DOCUMENTATION"
-      | "OTHER"
-    >
-  >;
+  setSelectedType: Dispatch<SetStateAction<"ALL" | Resource["type"]>>;
 }
 
 const ResourcesFilter = (props: TProps) => {

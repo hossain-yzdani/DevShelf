@@ -1,4 +1,4 @@
-import { Resource }from "@/types/Resource";
+import { Resource } from "../../../../../packages/types/resource.type";
 import { BookOpen, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,10 +26,10 @@ const FeaturedResources = (props: TProps) => {
               >
                 <div className="flex items-start gap-4">
                   <div className="w-16 h-20 rounded-lg bg-[#0A0A0A] flex items-center justify-center text-2xl border border-white/5 shrink-0">
-                    {resource.coverUrl ? (
+                    {resource.posterUrl ? (
                       <Image
-                        src={resource.coverUrl}
-                        alt={resource.title}
+                        src={resource.posterUrl}
+                        alt={resource.name}
                         width={64}
                         height={80}
                         className="rounded-lg object-cover"
@@ -40,7 +40,7 @@ const FeaturedResources = (props: TProps) => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-[#F5F5F5] font-medium line-clamp-1 group-hover:text-blue-400 transition">
-                      {resource.title}
+                      {resource.name}
                     </h3>
                     <p className="text-gray-400 text-sm line-clamp-1">
                       {resource.author}
@@ -53,7 +53,7 @@ const FeaturedResources = (props: TProps) => {
                       </span>
                       <span className="text-xs text-gray-500 flex items-center gap-1">
                         <Download size={12} />
-                        {resource.downloadCount}
+                        {resource.downloadsCount}
                       </span>
                     </div>
                   </div>

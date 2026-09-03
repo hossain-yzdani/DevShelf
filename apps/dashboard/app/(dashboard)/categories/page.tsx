@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/main/Header/Header";
 import SearchBox from "@/components/ui/searchBox/searchBox";
-import { Category } from "@/types/Category";
+import { Category } from "../../../../../packages/types";
 import CategoriesGrid from "@/components/categories/categoriesGrid";
 import { mockCategories } from "@/data/mockCategories";
 import Pagination from "@/components/ui/pagination/pagination";

@@ -140,4 +140,74 @@ export class ResourcesService {
       .limit(limit)
       .getMany();
   }
+
+  async searchResources(
+    query: string,
+    limit: number = 10,
+  ): Promise<Resource[]> {
+    const search = `%${query.trim()}%`;
+
+    const resources = await this.resourceRepository
+      .createQueryBuilder('resource')
+      .leftJoinAndSelect('resource.category', 'category')
+      .leftJoinAndSelect('resource.tags', 'tags')
+      .where('resource.name ILIKE :search', { search })
+      .orWhere('resource.description ILIKE :search', { search })
+      .orWhere('resource.author ILIKE :search', { search })
+      .orWhere('category.name ILIKE :search', { search })
+      .orWhere('tags.name ILIKE :search', { search })
+      .orderBy('resource.createdAt', 'DESC')
+      .take(limit)
+      .getMany();
+
+    return resources;
+  }
+
+  async advancedSearch(
+    filters: {
+      query?: string;
+      type?: string;
+      categoryId?: string;
+      tagId?: string;
+      author?: string;
+    },
+    limit: number = 10,
+  ): Promise<Resource[]> {
+    const queryBuilder = this.resourceRepository
+      .createQueryBuilder('resource')
+      .leftJoinAndSelect('resource.category', 'category')
+      .leftJoinAndSelect('resource.tags', 'tags');
+
+    if (filters.query) {
+      queryBuilder.andWhere(
+        '(resource.name ILIKE :query OR resource.description ILIKE :query OR resource.author ILIKE :query)',
+        { query: `%${filters.query}%` },
+      );
+    }
+
+    if (filters.type) {
+      queryBuilder.andWhere('resource.type = :type', { type: filters.type });
+    }
+
+    if (filters.categoryId) {
+      queryBuilder.andWhere('category.id = :categoryId', {
+        categoryId: filters.categoryId,
+      });
+    }
+
+    if (filters.tagId) {
+      queryBuilder.andWhere('tags.id = :tagId', { tagId: filters.tagId });
+    }
+
+    if (filters.author) {
+      queryBuilder.andWhere('resource.author ILIKE :author', {
+        author: `%${filters.author}%`,
+      });
+    }
+
+    return queryBuilder
+      .orderBy('resource.createdAt', 'DESC')
+      .limit(limit)
+      .getMany();
+  }
 }

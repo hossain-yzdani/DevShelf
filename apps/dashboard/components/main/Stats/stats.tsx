@@ -1,4 +1,4 @@
-import { Resource } from "@/types/Resource";
+import { Resource } from "../../../../../packages/types/resource.type";
 import { BookMarked, BookOpen, TrendingUp, Users } from "lucide-react";
 
 interface TProps {
@@ -24,7 +24,7 @@ const Stats = (props: TProps) => {
         </div>
         <p className="text-2xl font-bold text-[#F5F5F5] mt-1">
           {props.resources
-            .reduce((acc, r) => acc + r.downloadCount, 0)
+            .reduce((acc, r) => acc + r.downloadsCount, 0)
             .toLocaleString()}
         </p>
       </div>

@@ -1,4 +1,4 @@
-import { Tag as TypeTag } from "@/types/Tag";
+import { Tag as TypeTag } from "../../../../packages/types"
 import { Hash, Tag } from "lucide-react";
 import Actions from "../ui/actions/actions";
 
@@ -33,7 +33,7 @@ const TagsGrid = ({ paginatedTags, handleDelete }: TProps) => {
                   </div>
                 </div>
                 <span className="text-xs text-gray-500 bg-[#0A0A0A] px-2 py-1 rounded-full shrink-0">
-                  {tag.resourceCount} منبع
+                  {tag.name} منبع
                 </span>
               </div>
 

@@ -2,20 +2,33 @@
 
 import { useState, useEffect } from "react";
 import AllResources from "@/components/main/AllResources/allResources";
-import { Resource } from "@/types/Resource";
+import { Resource } from "../../../../packages/types/resource.type";
 import FeaturedResources from "@/components/main/FeaturedResources/featuredResources";
 import Stats from "@/components/main/Stats/stats";
 import Header from "@/components/main/Header/Header";
-import mockResources from "@/data/mockResources";
 import { typeColors, typeLabels } from "@/data/types";
+import { getResources } from "@/utils/resources/get.api";
 
 
 export default function DashboardPage() {
-  const [resources, setResources] = useState<Resource[]>(mockResources);
+  const [resources, setResources] = useState<Resource[] | []>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [loading, setLoading] = useState(false);
 
-  const featuredResources = resources.filter((r) => r.isFeatured);
+  useEffect( () => {
+    const fetchData = async () => {
+      try {
+        const resources = await getResources();
+        setResources(resources);
+      } catch (error) {
+        return;
+      }
+    }
+    fetchData();
+  }, [])
+
+
+  const featuredResources = resources.filter((r) => r);
   const recentResources = [...resources]
     .sort(
       (a, b) =>

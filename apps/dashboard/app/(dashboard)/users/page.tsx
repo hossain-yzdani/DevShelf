@@ -1,4 +1,3 @@
-// app/(dashboard)/users/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -8,7 +7,7 @@ import {
 import Pagination from "@/components/ui/pagination/pagination";
 import SearchBox from "@/components/ui/searchBox/searchBox";
 import Header from "@/components/main/Header/Header";
-import { User } from "@/types/User";
+import { User } from "../../../../../packages/types/user.type";
 import UsersTable from "../../../components/users/usersTable";
 import mockUsers from "@/data/mockUsers";
 
@@ -21,9 +20,8 @@ export default function UsersPage() {
 
   const filteredUsers = users.filter(
     (u) =>
-      u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.fullName.includes(searchQuery),
+      u.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      u.firstName?.includes(searchQuery),
   );
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);

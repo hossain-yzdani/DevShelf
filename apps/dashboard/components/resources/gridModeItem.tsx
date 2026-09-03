@@ -1,9 +1,9 @@
-import { Resource } from "@/types/Resource";
 import { BookOpen, Download, Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { typeLabels, typeColors } from "@/data/types";
 import Actions from "../ui/actions/actions";
+import { Resource } from "../../../../packages/types/resource.type";
 
 interface TProps {
   paginatedResources: Resource[];
@@ -23,10 +23,10 @@ const GridModeItem = ({ paginatedResources, handleDelete }: TProps) => {
             className="block p-5 pb-3 flex-1"
           >
             <div className="w-full aspect-video rounded-lg bg-[#0A0A0A] flex items-center justify-center text-4xl border border-white/5 mb-3 overflow-hidden">
-              {resource.coverUrl ? (
+              {resource.posterUrl ? (
                 <Image
-                  src={resource.coverUrl}
-                  alt={resource.title}
+                  src={resource.posterUrl}
+                  alt={resource.name}
                   width={300}
                   height={169}
                   className="object-cover"
@@ -36,7 +36,7 @@ const GridModeItem = ({ paginatedResources, handleDelete }: TProps) => {
               )}
             </div>
             <h3 className="text-[#F5F5F5] font-medium line-clamp-1 group-hover:text-blue-400 transition">
-              {resource.title}
+              {resource.name}
             </h3>
             <p className="text-gray-400 text-sm line-clamp-1">
               {resource.author}
@@ -49,7 +49,7 @@ const GridModeItem = ({ paginatedResources, handleDelete }: TProps) => {
               </span>
               <span className="text-xs text-gray-500 flex items-center gap-1">
                 <Download size={12} />
-                {resource.downloadCount}
+                {resource.downloadsCount}
               </span>
             </div>
           </Link>

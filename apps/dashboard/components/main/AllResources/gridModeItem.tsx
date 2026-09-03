@@ -1,4 +1,4 @@
-import { Resource } from "@/types/Resource";
+import { Resource } from "../../../../../packages/types/resource.type";
 import { BookOpen, Download, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,10 +19,10 @@ const GridModeItem = ({filteredResources}: TProps) => {
         >
           <div className="flex flex-col">
             <div className="w-full aspect-video rounded-lg bg-[#0A0A0A] flex items-center justify-center text-4xl border border-white/5 mb-3 overflow-hidden">
-              {resource.coverUrl ? (
+              {resource.posterUrl ? (
                 <Image
-                  src={resource.coverUrl}
-                  alt={resource.title}
+                  src={resource.posterUrl}
+                  alt={resource.name}
                   width={300}
                   height={169}
                   className="object-cover"
@@ -32,7 +32,7 @@ const GridModeItem = ({filteredResources}: TProps) => {
               )}
             </div>
             <h3 className="text-[#F5F5F5] font-medium line-clamp-1 group-hover:text-blue-400 transition">
-              {resource.title}
+              {resource.name}
             </h3>
             <p className="text-gray-400 text-sm line-clamp-1">
               {resource.author}
@@ -46,7 +46,7 @@ const GridModeItem = ({filteredResources}: TProps) => {
               <div className="flex items-center gap-2 text-gray-500 text-xs">
                 <span className="flex items-center gap-1">
                   <Download size={12} />
-                  {resource.downloadCount}
+                  {resource.downloadsCount}
                 </span>
                 <button
                   onClick={(e) => {

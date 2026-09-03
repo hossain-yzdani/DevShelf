@@ -1,4 +1,4 @@
-import { Category } from "@/types/Category";
+import { Category } from "../../../../packages/types";
 import { FolderOpen } from "lucide-react";
 import Actions from "../ui/actions/actions";
  
@@ -18,9 +18,7 @@ const CategoriesGrid = ({ paginatedCategories, handleDelete }: TProps) => {
           <div className="flex items-start justify-between p-5">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-[#0A0A0A] flex items-center justify-center text-xl border border-white/5 shrink-0">
-                {category.icon || (
                   <FolderOpen size={18} className="text-gray-500" />
-                )}
               </div>
               <div>
                 <h3 className="text-[#F5F5F5] font-medium">{category.name}</h3>
@@ -30,7 +28,7 @@ const CategoriesGrid = ({ paginatedCategories, handleDelete }: TProps) => {
               </div>
             </div>
             <span className="text-xs text-gray-500 bg-[#0A0A0A] px-2 py-1 rounded-full shrink-0">
-              {category.resourceCount} منبع
+              {category.resourcesCount} منبع
             </span>
           </div>
 

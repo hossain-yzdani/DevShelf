@@ -1,4 +1,4 @@
-import { Resource } from "@/types/Resource";
+import { Resource } from "../../../../../packages/types/resource.type";
 import { BookOpen, Download, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,10 +18,10 @@ const ListModeItem = ({ filteredResources }: TProps) => {
           className="bg-[#171717] rounded-xl p-4 border border-white/5 hover:border-white/10 transition flex items-center gap-4 group"
         >
           <div className="w-12 h-16 rounded-lg bg-[#0A0A0A] flex items-center justify-center text-xl border border-white/5 shrink-0">
-            {resource.coverUrl ? (
+            {resource.posterUrl ? (
               <Image
-                src={resource.coverUrl}
-                alt={resource.title}
+                src={resource.posterUrl}
+                alt={resource.name}
                 width={48}
                 height={64}
                 className="rounded-lg object-cover"
@@ -32,7 +32,7 @@ const ListModeItem = ({ filteredResources }: TProps) => {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-[#F5F5F5] font-medium group-hover:text-blue-400 transition">
-              {resource.title}
+              {resource.name}
             </h3>
             <p className="text-gray-400 text-sm">{resource.author}</p>
           </div>
@@ -43,7 +43,7 @@ const ListModeItem = ({ filteredResources }: TProps) => {
               {typeLabels[resource.type]}
             </span>
             <span className="text-xs text-gray-500">
-              {resource.downloadCount} دانلود
+              {resource.downloadsCount} دانلود
             </span>
           </div>
         </Link>

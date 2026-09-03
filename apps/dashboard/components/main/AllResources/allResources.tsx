@@ -1,6 +1,6 @@
 "use client";
 
-import { Resource } from "@/types/Resource";
+import { Resource } from "../../../../../packages/types/resource.type";
 import { BookOpen, Grid3x3, List, Search } from "lucide-react";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -20,7 +20,7 @@ const AllResources = (props: TProps) => {
 
   const filteredResources = props.resources.filter(
     (r) =>
-      r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.description.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 

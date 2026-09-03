@@ -1,6 +1,6 @@
 "use client";
 
-import { Resource } from "@/types/Resource";
+import { Resource } from "../../../../packages/types/resource.type"
 import { BookOpen } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import GridModeItem from "./gridModeItem";
@@ -20,12 +20,7 @@ interface TProps {
   setSelectedType: Dispatch<
     SetStateAction<
       | "ALL"
-      | "BOOK"
-      | "COURSE"
-      | "ARTICLE"
-      | "CHEATSHEET"
-      | "DOCUMENTATION"
-      | "OTHER"
+      | Resource["type"]
     >
   >;
 
@@ -38,7 +33,7 @@ const Resources = (props: TProps) => {
 
   const filteredResources = props.resources.filter((r) => {
     const matchesSearch =
-      r.title.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
+      r.name.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
       r.description.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
       r.author.toLowerCase().includes(props.searchQuery.toLowerCase());
     const matchesType =

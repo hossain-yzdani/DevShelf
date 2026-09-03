@@ -37,4 +37,20 @@ export class ResourceService {
       throw error;
     }
   }
+
+  static async searchResources(
+    query: string,
+    limit: number = 10,
+  ): Promise<Resource[]> {
+    try {
+      const response = await apiClient.get<Resource[]>("/resources/search", {
+        q: query,
+        limit,
+      });
+      return response;
+    } catch (error) {
+      logger.error({ query, error }, "Failed to search resources");
+      throw error;
+    }
+  }
 }

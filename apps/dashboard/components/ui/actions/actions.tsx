@@ -1,7 +1,7 @@
-import { Category } from "@/types/Category";
-import { Resource } from "@/types/Resource";
-import { Tag } from "@/types/Tag";
-import { User } from "@/types/User";
+import { Resource } from "../../../../../packages/types/resource.type";
+import { User } from "../../../../../packages/types/user.type"
+import { Tag } from "../../../../../packages/types/";
+import { Category } from "../../../../../packages/types/";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 

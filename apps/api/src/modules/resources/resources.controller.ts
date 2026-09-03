@@ -11,6 +11,7 @@ import {
 import { ResourcesService } from './resources.service';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
 
 @Controller('resources')
 export class ResourcesController {
@@ -25,7 +26,24 @@ export class ResourcesController {
   findAll() {
     return this.resourcesService.findAll();
   }
-  
+
+  @Get('search')
+  @ApiOperation({ summary: 'Search resources by query' })
+  @ApiQuery({ name: 'q', required: true, description: 'Search query' })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of results',
+  })
+  async search(@Query('q') query: string, @Query('limit') limit?: string) {
+    if (!query || query.trim().length === 0) {
+      return [];
+    }
+
+    const limitNumber = limit ? parseInt(limit, 10) : 10;
+    return this.resourcesService.searchResources(query, limitNumber);
+  }
+
   @Get('popular')
   async getPopular(@Query('limit') limit?: string) {
     const limitNumber = limit ? parseInt(limit, 10) : 10;

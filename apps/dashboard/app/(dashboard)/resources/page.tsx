@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/main/Header/Header";
-import mockResources from "@/data/mockResources";
-import { Resource } from "@/types/Resource";
 import Resources from "@/components/resources/allResources";
+import { Resource } from "../../../../../packages/types/resource.type";
 import ResourcesFilter from "@/components/resources/filters/resourcesFilter";
 import Pagination from "@/components/ui/pagination/pagination";
+import { getResources } from "@/utils/resources/get.api";
 
 export default function ResourcesPage() {
-  const [resources, setResources] = useState<Resource[]>(mockResources);
+  const [resources, setResources] = useState<Resource[] | []>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<Resource["type"] | "ALL">(
@@ -22,9 +22,21 @@ export default function ResourcesPage() {
 
   const handleDelete = (id: string) => {
     if (confirm("آیا از حذف این منبع مطمئن هستید؟")) {
-      setResources(resources.filter((r) => r.id !== id));
+      setResources(resources!.filter((r) => r.id !== id));
     }
   };
+
+  useEffect( () => {
+    const fetchData = async () => {
+      try {
+        const resources = await getResources();
+        setResources(resources);
+      } catch (error) {
+        return;
+      }
+    }
+    fetchData();
+  }, [])
 
   return (
     <div className="space-y-6">
