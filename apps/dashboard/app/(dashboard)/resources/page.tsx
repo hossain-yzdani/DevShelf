@@ -6,7 +6,7 @@ import Resources from "@/components/resources/allResources";
 import { Resource } from "../../../../../packages/types/resource.type";
 import ResourcesFilter from "@/components/resources/filters/resourcesFilter";
 import Pagination from "@/components/ui/pagination/pagination";
-import { getResources } from "@/utils/resources/get.api";
+import { ResourcesApi } from "@/utils/resources/resource.api";
 import CreateResourceModal from "@/components/resources/modals/createResource.modal";
 
 export default function ResourcesPage() {
@@ -29,17 +29,17 @@ export default function ResourcesPage() {
     }
   };
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const resources = await getResources();
+        const resources = await ResourcesApi.getAll();
         setResources(resources);
       } catch (error) {
         return;
       }
-    }
+    };
     fetchData();
-  }, [])
+  }, []);
 
   return (
     <div className="space-y-6">

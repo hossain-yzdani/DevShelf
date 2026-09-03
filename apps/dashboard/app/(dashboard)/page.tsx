@@ -7,26 +7,25 @@ import FeaturedResources from "@/components/main/FeaturedResources/featuredResou
 import Stats from "@/components/main/Stats/stats";
 import Header from "@/components/main/Header/Header";
 import { typeColors, typeLabels } from "@/data/types";
-import { getResources } from "@/utils/resources/get.api";
-
+import { ResourcesApi } from "@/utils/resources/resource.api";
 
 export default function DashboardPage() {
   const [resources, setResources] = useState<Resource[] | []>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [loading, setLoading] = useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const resources = await getResources();
+        const resources = await ResourcesApi.getAll();
+        console.log(resources);
         setResources(resources);
       } catch (error) {
         return;
       }
-    }
+    };
     fetchData();
-  }, [])
-
+  }, []);
 
   const featuredResources = resources.filter((r) => r);
   const recentResources = [...resources]

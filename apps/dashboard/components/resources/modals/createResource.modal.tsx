@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Resource } from "../../../../../packages/types/resource.type";
 import { CategoriesApi } from "@/utils/category/categories.api";
 import { TagsApi } from "@/utils/tags/tags.api";
 import { CustomSelect } from "@/components/ui/customSelect/customSelect";
 import { MultiSelect } from "@/components/ui/customSelect/multySelect";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
+import { ResourcesApi } from "@/utils/resources/resource.api";
 
 interface CreateResourceModalProps {
   isOpen: boolean;
@@ -16,26 +16,11 @@ interface CreateResourceModalProps {
 }
 
 export const RESOURCE_TYPES = [
-  {
-    value: "BOOK",
-    label: "کتاب",
-  },
-  {
-    value: "VIDEO",
-    label: "ویدیو",
-  },
-  {
-    value: "COURSE",
-    label: "دوره",
-  },
-  {
-    value: "ARTICLE",
-    label: "مقاله",
-  },
-  {
-    value: "AUDIO",
-    label: "صوتی",
-  },
+  { value: "book", label: "کتاب" },
+  { value: "VIDEO", label: "ویدیو" },
+  { value: "COURSE", label: "دوره" },
+  { value: "ARTICLE", label: "مقاله" },
+  { value: "AUDIO", label: "صوتی" },
 ];
 
 export default function CreateResourceModal({
@@ -49,19 +34,18 @@ export default function CreateResourceModal({
 
   const [formData, setFormData] = useState({
     name: "",
+    slug: "",
     description: "",
-    type: "" as string | "",
+    type: "",
     author: "",
     fileUrl: "",
     posterUrl: "",
     category: "",
-    tagIds: [] as string[],
+    tags: [] as string[],
   });
 
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [showTagDropdown, setShowTagDropdown] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -81,25 +65,36 @@ export default function CreateResourceModal({
     }
   }, [isOpen]);
 
+  // تولید slug از name
+  const generateSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
+    // تولید slug اگه خالی باشه
+    const slug = formData.slug || generateSlug(formData.name);
+
+    const payload = {
+      name: formData.name,
+      slug: slug,
+      description: formData.description,
+      type: formData.type,
+      author: formData.author,
+      fileUrl: formData.fileUrl,
+      posterUrl: formData.posterUrl,
+      category: formData.category,
+      tags: formData.tags,
+    };
+
     try {
-      console.log("Resource created:", formData);
-
-      setFormData({
-        name: "",
-        description: "",
-        type: "",
-        author: "",
-        fileUrl: "",
-        posterUrl: "",
-        category: "",
-        tagIds: [],
-      });
-
+      await ResourcesApi.create(payload);
       if (onSuccess) onSuccess();
       onClose();
       router.refresh();
@@ -124,15 +119,15 @@ export default function CreateResourceModal({
         {/* Header */}
         <div className="sticky top-0 z-10 bg-[#171717] border-b border-white/5 px-6 py-4 rounded-t-2xl">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-[#F5F5F5]">
-              <span className="ml-2"><Plus size={24} /></span>
+            <h2 className="text-xl font-bold text-[#F5F5F5] flex items-center gap-2">
+              <Plus size={24} />
               منبع جدید
             </h2>
             <button
               onClick={onClose}
               className="p-2 rounded-lg hover:bg-white/5 transition text-gray-400 hover:text-[#F5F5F5]"
             >
-              <Plus size={20} rotate={45} />
+              <X size={20} />
             </button>
           </div>
         </div>
@@ -153,11 +148,33 @@ export default function CreateResourceModal({
             <input
               type="text"
               value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => {
+                const name = e.target.value;
+                setFormData({
+                  ...formData,
+                  name,
+                  slug: generateSlug(name), // 👈 auto-generate slug
+                });
+              }}
               placeholder="مثال: Mastering NestJS"
-              className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] focus:outline-none transition"
+              className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition"
+              required
+            />
+          </div>
+
+          {/* Slug (auto-generated but editable) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-400 mb-1.5">
+              اسلاگ <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.slug}
+              onChange={(e) =>
+                setFormData({ ...formData, slug: e.target.value })
+              }
+              placeholder="mastering-nestjs"
+              className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition"
               required
             />
           </div>
@@ -174,7 +191,7 @@ export default function CreateResourceModal({
               }
               placeholder="توضیحات کامل منبع..."
               rows={3}
-              className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] focus:outline-none transition resize-none"
+              className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition resize-none"
               required
             />
           </div>
@@ -189,10 +206,7 @@ export default function CreateResourceModal({
                 options={RESOURCE_TYPES}
                 value={formData.type}
                 onChange={(value: string) =>
-                  setFormData({
-                    ...formData,
-                    type: value,
-                  })
+                  setFormData({ ...formData, type: value })
                 }
                 placeholder="انتخاب نوع..."
               />
@@ -209,7 +223,7 @@ export default function CreateResourceModal({
                   setFormData({ ...formData, author: e.target.value })
                 }
                 placeholder="نام نویسنده"
-                className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] focus:outline-none transition"
+                className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition"
                 required
               />
             </div>
@@ -228,7 +242,7 @@ export default function CreateResourceModal({
                   setFormData({ ...formData, fileUrl: e.target.value })
                 }
                 placeholder="https://example.com/file.pdf"
-                className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] focus:outline-none transition"
+                className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition"
                 required
               />
             </div>
@@ -244,14 +258,14 @@ export default function CreateResourceModal({
                   setFormData({ ...formData, posterUrl: e.target.value })
                 }
                 placeholder="https://example.com/poster.jpg"
-                className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] focus:outline-none transition"
+                className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition"
               />
             </div>
           </div>
 
           {/* Category + Tags */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="relative">
+            <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">
                 دسته‌بندی <span className="text-red-400">*</span>
               </label>
@@ -260,7 +274,7 @@ export default function CreateResourceModal({
                   value: cat.id,
                   label: cat.name,
                 }))}
-                onChange={(value: any) => {
+                onChange={(value: string) => {
                   setFormData({ ...formData, category: value });
                 }}
                 value={formData.category}
@@ -268,7 +282,7 @@ export default function CreateResourceModal({
               />
             </div>
 
-            <div className="relative">
+            <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">
                 تگ‌ها
               </label>
@@ -277,9 +291,9 @@ export default function CreateResourceModal({
                   value: tag.id,
                   label: tag.name,
                 }))}
-                value={formData.tagIds}
+                value={formData.tags}
                 onChange={(newValue) =>
-                  setFormData({ ...formData, tagIds: newValue })
+                  setFormData({ ...formData, tags: newValue })
                 }
                 placeholder="تگ‌ها را انتخاب کنید..."
                 className="w-full"
@@ -327,7 +341,7 @@ export default function CreateResourceModal({
                 </>
               ) : (
                 <>
-                  <Plus size={20} /> ایجاد منیع
+                  <Plus size={20} /> ایجاد منبع
                 </>
               )}
             </button>
