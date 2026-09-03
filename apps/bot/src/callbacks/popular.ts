@@ -2,6 +2,7 @@ import { Bot, InlineKeyboard } from "grammy";
 import { ResourceService } from "../services/resource.service";
 import { backKeyboard } from "../keyboards/main.keyboard";
 import { logger } from "../utils/logger";
+import { Resource } from "../../../../packages/types/resource.type";
 
 export function registerPopularCallbacks(bot: Bot) {
   bot.callbackQuery("popular", async (ctx) => {
@@ -25,21 +26,12 @@ export function registerPopularCallbacks(bot: Bot) {
 
       const keyboard = new InlineKeyboard();
 
-      for (let i = 0; i < resources.length; i += 2) {
-        const res1 = resources[i];
-        const res2 = resources[i + 1];
-
-        if (res2) {
-          keyboard
-            .text(`⭐ ${res1.name}`, `view_${res1.slug}`)
-            .primary()
-            .text(`⭐ ${res2.name}`, `view_${res2.slug}`)
-            .primary()
-            .row();
-        } else {
-          keyboard.text(`⭐ ${res1.name}`, `view_${res1.slug}`).primary().row();
-        }
-      }
+      resources.forEach((resource: Resource) => {
+        keyboard
+          .text(`⭐ ${resource.name}`, `view_${resource.slug}`)
+          .primary()
+          .row();
+      });
 
       keyboard.text("↩️ Back", "back");
 

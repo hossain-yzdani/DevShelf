@@ -2,6 +2,7 @@ import { Bot } from "grammy";
 import { CategoryService } from "../services/category.service";
 import { backKeyboard } from "../keyboards/main.keyboard";
 import { InlineKeyboard } from "grammy";
+import { Resource } from "../../../../packages/types/resource.type";
 
 export function registerCategoryCallbacks(bot: Bot) {
   bot.callbackQuery("categories", async (ctx) => {
@@ -88,21 +89,13 @@ export function registerCategoryCallbacks(bot: Bot) {
 
       const keyboard = new InlineKeyboard();
 
-      for (let i = 0; i < resources.slice(0, 10).length; i += 2) {
-        const res1 = resources.slice(0, 10)[i];
-        const res2 = resources.slice(0, 10)[i + 1];
+      resources.forEach((resource: Resource) => {
+        keyboard
+          .text(`📌 ${resource.name}`, `view_${resource.slug}`)
+          .primary()
+          .row();
+      });
 
-        if (res2) {
-          keyboard
-            .text(`📌 ${res1.name}`, `view_${res1.slug}`)
-            .primary()
-            .text(`📌 ${res2.name}`, `view_${res2.slug}`)
-            .primary()
-            .row();
-        } else {
-          keyboard.text(`📌 ${res1.name}`, `view_${res1.slug}`).primary().row();
-        }
-      }
 
       keyboard.text("↩️ Back to Categories", "categories").row();
 
