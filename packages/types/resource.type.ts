@@ -1,4 +1,4 @@
-export type ResourceType = "BOOK" | "VIDEO" | "ARTICLE" | "AUDIO" | "COURSE";
+export type ResourceType = "book" | "video" | "ARTICLE" | "AUDIO" | "COURSE";
 
 export interface Category {
   id: string;

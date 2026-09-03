@@ -7,6 +7,7 @@ import { Resource } from "../../../../../packages/types/resource.type";
 import ResourcesFilter from "@/components/resources/filters/resourcesFilter";
 import Pagination from "@/components/ui/pagination/pagination";
 import { getResources } from "@/utils/resources/get.api";
+import CreateResourceModal from "@/components/resources/modals/createResource.modal";
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[] | []>([]);
@@ -17,6 +18,8 @@ export default function ResourcesPage() {
   );
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   const totalPages = 10;
 
@@ -44,6 +47,7 @@ export default function ResourcesPage() {
         title="منابع"
         description="مدیریت منابع آموزشی و کتاب‌ها"
         button="منبع جدید"
+        setOpen={setModalOpen}
       />
 
       <ResourcesFilter
@@ -72,6 +76,11 @@ export default function ResourcesPage() {
         totalPages={totalPages}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+      />
+
+      <CreateResourceModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
       />
     </div>
   );

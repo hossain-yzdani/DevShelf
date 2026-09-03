@@ -18,7 +18,7 @@ const ResourcesFilter = (props: TProps) => {
 
   const typeOptions = [
     { value: "ALL", label: "همه انواع" },
-    { value: "BOOK", label: "کتاب" },
+    { value: "book", label: "کتاب" },
     { value: "COURSE", label: "دوره" },
     { value: "ARTICLE", label: "مقاله" },
     { value: "CHEATSHEET", label: "خلاصه" },
