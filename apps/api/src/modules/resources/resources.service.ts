@@ -6,12 +6,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ResourceResponseDto } from './dto/response-resouce.dto.';
 import { Resource } from './entities/resource.entity';
 import { ResourceMapper } from './resource.mapper';
+import { Tag } from '../tags/entities/tag.entity';
+import { Category } from '../categories/entities/category.entity';
 
 @Injectable()
 export class ResourcesService {
   constructor(
     @InjectRepository(Resource)
     private resourceRepository: Repository<Resource>,
+
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
+
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async create(
@@ -93,20 +101,37 @@ export class ResourcesService {
         downloads: true,
       },
     });
+
     if (!resource) {
       throw new NotFoundException('Resource was not found');
     }
-    const updateData: any = { ...updateResourceDto };
-    if (updateData.category) {
-      updateData.category = { id: updateData.category };
+
+    const { category, tags, ...data } = updateResourceDto;
+
+    if (category !== undefined) {
+      const categoryEntity = await this.categoryRepository.findOne({
+        where: { id: category },
+      });
+
+      if (!categoryEntity) {
+        throw new NotFoundException('Category was not found');
+      }
+
+      resource.category = categoryEntity;
     }
-    if (updateData.tags !== undefined) {
-      updateData.tags = updateData.tags.map((id: string) => ({ id }));
+
+    if (tags !== undefined) {
+      resource.tags = await this.tagRepository.find({
+        where: tags.map((id) => ({ id })),
+      });
     }
-    const updated = this.resourceRepository.merge(resource, updateData);
-    const saved = await this.resourceRepository.save(updated);
+
+    this.resourceRepository.merge(resource, data);
+
+    const saved = await this.resourceRepository.save(resource);
+
     const loaded = await this.resourceRepository.findOne({
-      where: { slug: saved.slug },
+      where: { id: saved.id },
       relations: {
         category: true,
         tags: true,

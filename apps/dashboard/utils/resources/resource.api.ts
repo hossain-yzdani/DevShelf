@@ -96,27 +96,24 @@ export const ResourcesApi = {
       author?: string;
       fileUrl?: string;
       posterUrl?: string;
-      categoryId?: string;
-      tagIds?: string[];
+      category?: string;
+      tags?: string[];
     },
   ) => {
     const response = await apiClient.patch(`/resources/${slug}`, data);
     return response.data;
   },
 
-  // حذف منبع
   delete: async (slug: string) => {
     const response = await apiClient.delete(`/resources/${slug}`);
     return response.data;
   },
 
-  // دریافت آمار منابع
   getStats: async () => {
     const response = await apiClient.get("/resources/stats");
     return response.data;
   },
 
-  // دریافت منابع یک دسته‌بندی
   getByCategory: async (categorySlug: string) => {
     const response = await apiClient.get(
       `/categories/${categorySlug}/resources`,
@@ -124,7 +121,6 @@ export const ResourcesApi = {
     return response.data;
   },
 
-  // دریافت منابع یک تگ
   getByTag: async (tagSlug: string) => {
     const response = await apiClient.get(`/tags/${tagSlug}/resources`);
     return response.data;

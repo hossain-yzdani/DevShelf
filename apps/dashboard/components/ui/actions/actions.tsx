@@ -1,20 +1,19 @@
 import { Resource } from "../../../../../packages/types/resource.type";
-import { User } from "../../../../../packages/types/user.type"
 import { Tag } from "../../../../../packages/types/";
 import { Category } from "../../../../../packages/types/";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 interface TProps {
-  resource: Resource | Category | Tag | User;
+  resource: Resource | Category | Tag;
   handleDelete: (id: string) => void;
 }
 
-const Actions = ({resource, handleDelete}: TProps) => {
+const Actions = ({ resource, handleDelete }: TProps) => {
   return (
     <div className="flex items-center justify-end gap-2/3 p-2 pt-0">
       <Link
-        href={`/resources/edit/${resource.id}`}
+        href={`/resource/${resource.slug}`}
         className="p-2 rounded-lg text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 transition"
       >
         <Edit size={16} />
@@ -28,6 +27,6 @@ const Actions = ({resource, handleDelete}: TProps) => {
       </button>
     </div>
   );
-}
- 
+};
+
 export default Actions;

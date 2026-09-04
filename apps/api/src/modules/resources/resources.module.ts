@@ -5,9 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Resource } from './entities/resource.entity';
 import { Favorite } from '../favorites/entities/favorite.entity';
 import { Download } from '../downloads/entities/download.entity';
+import { Category } from '../categories/entities/category.entity';
+import { Tag } from '../tags/entities/tag.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Resource])],
+  imports: [TypeOrmModule.forFeature([Resource, Category, Tag])],
   controllers: [ResourcesController],
   providers: [ResourcesService],
   exports: [ResourcesService],

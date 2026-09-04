@@ -4,13 +4,19 @@ import Link from "next/link";
 import { typeLabels, typeColors } from "@/data/types";
 import Actions from "../ui/actions/actions";
 import { Resource } from "../../../../packages/types/resource.type";
+import ResourceActions from "../ui/actions/resourceActions";
 
 interface TProps {
   paginatedResources: Resource[];
-  handleDelete: (id: string) => void;
+  handleDelete: (resource: Resource) => void;
+  handleEdit: (resource: Resource) => void;
 }
 
-const GridModeItem = ({ paginatedResources, handleDelete }: TProps) => {
+const GridModeItem = ({
+  paginatedResources,
+  handleDelete,
+  handleEdit,
+}: TProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {paginatedResources.map((resource) => (
@@ -54,7 +60,11 @@ const GridModeItem = ({ paginatedResources, handleDelete }: TProps) => {
             </div>
           </Link>
 
-          <Actions resource={resource} handleDelete={handleDelete} />
+          <ResourceActions
+            resource={resource}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
         </div>
       ))}
     </div>

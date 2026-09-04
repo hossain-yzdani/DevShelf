@@ -1,6 +1,6 @@
 "use client";
 
-import { Resource } from "../../../../packages/types/resource.type"
+import { Resource } from "../../../../packages/types/resource.type";
 import { BookOpen } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import GridModeItem from "./gridModeItem";
@@ -17,14 +17,10 @@ interface TProps {
   setSearchQuery: Dispatch<SetStateAction<string>>;
 
   selectedType: string;
-  setSelectedType: Dispatch<
-    SetStateAction<
-      | "ALL"
-      | Resource["type"]
-    >
-  >;
+  setSelectedType: Dispatch<SetStateAction<"ALL" | Resource["type"]>>;
 
-  handleDelete: (id: string) => void;
+  handleDelete: (resource: Resource) => void;
+  handleEdit: (resource: Resource) => void;
 }
 
 const Resources = (props: TProps) => {
@@ -46,7 +42,6 @@ const Resources = (props: TProps) => {
     currentPage * itemsPerPage,
   );
 
-
   return (
     <>
       {props.loading ? (
@@ -63,11 +58,13 @@ const Resources = (props: TProps) => {
         <GridModeItem
           paginatedResources={paginatedResources}
           handleDelete={props.handleDelete}
+          handleEdit={props.handleEdit}
         />
       ) : (
         <ListModeItem
           paginatedResources={paginatedResources}
           handleDelete={props.handleDelete}
+          handleEdit={props.handleEdit}
         />
       )}
     </>

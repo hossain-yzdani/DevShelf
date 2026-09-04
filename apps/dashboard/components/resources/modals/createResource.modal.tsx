@@ -13,6 +13,7 @@ interface CreateResourceModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+  onUpdated: () => void;
 }
 
 export const RESOURCE_TYPES = [
@@ -27,6 +28,7 @@ export default function CreateResourceModal({
   isOpen,
   onClose,
   onSuccess,
+  onUpdated,
 }: CreateResourceModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -65,7 +67,6 @@ export default function CreateResourceModal({
     }
   }, [isOpen]);
 
-  // تولید slug از name
   const generateSlug = (name: string) => {
     return name
       .toLowerCase()
@@ -78,7 +79,6 @@ export default function CreateResourceModal({
     setLoading(true);
     setError("");
 
-    // تولید slug اگه خالی باشه
     const slug = formData.slug || generateSlug(formData.name);
 
     const payload = {
@@ -97,7 +97,7 @@ export default function CreateResourceModal({
       await ResourcesApi.create(payload);
       if (onSuccess) onSuccess();
       onClose();
-      router.refresh();
+      onUpdated();
     } catch (err: any) {
       setError(err.message || "خطا در ایجاد منبع");
     } finally {

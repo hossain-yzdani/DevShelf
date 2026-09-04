@@ -1,5 +1,6 @@
 import Actions from "@/components/ui/actions/actions";
 import { User } from "../../../../packages/types/user.type";
+import UserActions from "../ui/actions/userActions";
 
 const roleColors: Record<User["role"], string> = {
   admin: "bg-purple-500/20 text-purple-400 border-purple-500/30",
@@ -96,7 +97,7 @@ const UsersTable = ({ paginatedUsers, handleDelete}: TProps) => {
                   {new Date(user.updatedAt).toLocaleDateString("fa-IR")}
                 </td>
                 <td className="px-4 py-3">
-                  <Actions resource={user} handleDelete={handleDelete} />
+                  <UserActions resource={user} handleDelete={handleDelete} />
                 </td>
               </tr>
             ))}

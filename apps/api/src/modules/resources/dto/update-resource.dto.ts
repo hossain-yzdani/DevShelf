@@ -12,6 +12,15 @@ export class UpdateResourceDto {
   @IsString({ message: 'Name must be a string' })
   name?: string;
 
+    @ApiProperty({
+    description: 'Unique slug of the resource',
+    example: 'advanced-Nodejs-programming-v2',
+    required: false,
+  })
+  @IsOptional()
+  @IsString({ message: 'Name must be a string' })
+  slug?: string;
+
   @ApiProperty({
     description: 'Full description of the resource',
     example:

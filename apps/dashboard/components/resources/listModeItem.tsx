@@ -1,16 +1,21 @@
-import { BookOpen, Download, Edit, Trash2 } from "lucide-react";
+import { BookOpen, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { typeLabels, typeColors } from "@/data/types";
-import Actions from "../ui/actions/actions";
 import { Resource } from "../../../../packages/types/resource.type";
+import ResourceActions from "../ui/actions/resourceActions";
 
 interface TProps {
   paginatedResources: Resource[];
-  handleDelete: (id: string) => void;
+  handleDelete: (resource: Resource) => void;
+  handleEdit: (resource: Resource) => void;
 }
 
-const ListModeItem = ({ paginatedResources, handleDelete }: TProps) => {
+const ListModeItem = ({
+  paginatedResources,
+  handleDelete,
+  handleEdit,
+}: TProps) => {
   return (
     <div className="space-y-3">
       {paginatedResources.map((resource) => (
@@ -56,7 +61,11 @@ const ListModeItem = ({ paginatedResources, handleDelete }: TProps) => {
             </Link>
           </div>
 
-          <Actions resource={resource} handleDelete={handleDelete} />
+          <ResourceActions
+            resource={resource}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
         </div>
       ))}
     </div>
