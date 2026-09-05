@@ -1,13 +1,14 @@
-import { Category } from "../../../../packages/types";
 import { FolderOpen } from "lucide-react";
-import Actions from "../ui/actions/actions";
+import { Category } from "../../../../packages/types/category.type";
+import CategoryActions from "../ui/actions/categoryActions";
  
 interface TProps {
   paginatedCategories: Category[];
-  handleDelete: (id: string) => void;
+  handleDelete: (item: Category) => void;
+  handleEdit: (item: Category) => void;
 }
 
-const CategoriesGrid = ({ paginatedCategories, handleDelete }: TProps) => {
+const CategoriesGrid = ({ paginatedCategories, handleDelete, handleEdit }: TProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {paginatedCategories.map((category) => (
@@ -32,7 +33,11 @@ const CategoriesGrid = ({ paginatedCategories, handleDelete }: TProps) => {
             </span>
           </div>
 
-          <Actions resource={category} handleDelete={handleDelete} />
+          <CategoryActions
+            category={category}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
         </div>
       ))}
     </div>

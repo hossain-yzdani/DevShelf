@@ -1,13 +1,14 @@
-import { Tag as TypeTag } from "../../../../packages/types"
+import { Tag as TypeTag } from "../../../../packages/types/tag.type";
 import { Hash, Tag } from "lucide-react";
-import Actions from "../ui/actions/actions";
+import TagActions from "../ui/actions/tagActions";
 
 interface TProps {
   paginatedTags: TypeTag[];
-  handleDelete: (id: string) => void;
+  handleDelete: (tag: TypeTag) => void;
+  handleEdit: (tag: TypeTag) => void;
 }
 
-const TagsGrid = ({ paginatedTags, handleDelete }: TProps) => {
+const TagsGrid = ({ paginatedTags, handleDelete, handleEdit }: TProps) => {
   return (
     <>
       {paginatedTags.length === 0 ? (
@@ -37,7 +38,10 @@ const TagsGrid = ({ paginatedTags, handleDelete }: TProps) => {
                 </span>
               </div>
 
-              <Actions resource={tag} handleDelete={handleDelete} />
+              <TagActions
+                tag={tag}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit} />
             </div>
           ))}
         </div>

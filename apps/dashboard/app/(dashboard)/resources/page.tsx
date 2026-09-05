@@ -9,7 +9,7 @@ import Pagination from "@/components/ui/pagination/pagination";
 import { ResourcesApi } from "@/utils/resources/resource.api";
 import CreateResourceModal from "@/components/resources/modals/createResource.modal";
 import UpdateResourceModal from "@/components/resources/modals/updateResource.modal";
-import DeleteConfirmModal from "@/components/resources/modals/delteResource.modal";
+import DeleteConfirmModal from "@/components/resources/modals/deleteResource.modal";
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[] | []>([]);
@@ -38,8 +38,8 @@ export default function ResourcesPage() {
     }
   };
 
-  const handleEdit = async (resource: Resource) => {
-    setSavedResource(resource);
+  const handleEdit = async (item: Resource) => {
+    setSavedResource(item);
     setUpdateModalOpen(true);
   };
 
