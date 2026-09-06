@@ -1,6 +1,6 @@
 import { apiClient } from "./api.client";
 import { logger } from "../utils/logger";
-import { Category } from "../types"
+import { Category } from "../../../../packages/types/category.type";
 
 export class CategoryService {
   static async getAll(): Promise<Category[]> {

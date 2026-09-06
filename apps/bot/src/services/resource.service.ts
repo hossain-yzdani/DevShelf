@@ -1,7 +1,6 @@
 import { apiClient } from "./api.client";
 import { logger } from "../utils/logger";
-import { Resource } from "../types/resource.type";
-import { Readable } from "stream";
+import { Resource } from "../../../../packages/types/resource.type";
 
 export class ResourceService {
   static async getBySlug(slug: string): Promise<Resource> {

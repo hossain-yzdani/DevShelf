@@ -2,7 +2,7 @@ import { Bot, InlineKeyboard } from "grammy";
 import { FavoriteService } from "../services/favorite.service";
 import { logger } from "../utils/logger";
 import { backKeyboard } from "../keyboards/main.keyboard";
-import { Resource } from "../types/resource.type";
+import { Resource } from "../../../../packages/types/resource.type";
 
 export function registerFavoriteCallbacks(bot: Bot) {
   bot.callbackQuery("myFavorites", async (ctx) => {

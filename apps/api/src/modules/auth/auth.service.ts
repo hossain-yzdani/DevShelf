@@ -8,6 +8,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { LoginAuthDto } from './dto/login.dto';
+import { CreateAuthDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,9 +17,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async registerBot(createAuthDto) {
+  async registerBot(createAuthDto: CreateAuthDto) {
     try {
-      const user = await this.usersService.findForAuth(createAuthDto.username);
+      const user = await this.usersService.findForAuth(createAuthDto.telegramId);
       if (user) {
         const updatedUser = await this.usersService.update(user.id, createAuthDto);
         return {

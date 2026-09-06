@@ -1,4 +1,3 @@
-import Actions from "@/components/ui/actions/actions";
 import { User } from "../../../../packages/types/user.type";
 import UserActions from "../ui/actions/userActions";
 
@@ -26,10 +25,11 @@ const statusLabels: Record<string, string> = {
 
 interface TProps {
   paginatedUsers: User[];
-  handleDelete: (id: string) => void;
+  handleDelete: (user: User) => void;
+  handleUpdata: (user: User) => void;
 }
 
-const UsersTable = ({ paginatedUsers, handleDelete}: TProps) => {
+const UsersTable = ({ paginatedUsers, handleDelete, handleUpdata }: TProps) => {
   return (
     <div className="bg-[#171717] rounded-xl border border-white/5 overflow-hidden">
       <div className="overflow-x-auto">
@@ -97,7 +97,11 @@ const UsersTable = ({ paginatedUsers, handleDelete}: TProps) => {
                   {new Date(user.updatedAt).toLocaleDateString("fa-IR")}
                 </td>
                 <td className="px-4 py-3">
-                  <UserActions resource={user} handleDelete={handleDelete} />
+                  <UserActions
+                    user={user}
+                    handleDelete={handleDelete}
+                    handleEdit={handleUpdata}
+                  />
                 </td>
               </tr>
             ))}

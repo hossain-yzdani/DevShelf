@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Readable } from "stream";
 import { logger } from "../utils/logger";
-import { Resource } from "../types/resource.type";
+import { Resource } from "../../../../packages/types/resource.type";
 import { env } from "process";
 
 export class FileService {

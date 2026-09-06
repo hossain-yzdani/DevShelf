@@ -1,6 +1,7 @@
 import { apiClient } from "./api.client";
 import { logger } from "../utils/logger";
-import { Resource, Tag } from "../types/resource.type";
+import { Resource } from "../../../../packages/types/resource.type";
+import { Tag } from "../../../../packages/types/tag.type";
 
 
 export class TagService {

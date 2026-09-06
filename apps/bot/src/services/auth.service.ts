@@ -1,4 +1,4 @@
-import { Auth } from "../types/auth";
+import { Auth } from "../../../../packages/types/auth";
 import { logger } from "../utils/logger";
 import { apiClient } from "./api.client";
 

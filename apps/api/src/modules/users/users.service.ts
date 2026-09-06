@@ -74,9 +74,9 @@ export class UsersService {
     return UserMapper.toResponseDto(user);
   }
 
-  async findForAuth(username: string) {
+  async findForAuth(id: any) {
     return this.userRepository.findOne({
-      where: { username },
+      where: { telegramId: id },
       select: {
         id: true,
         username: true,

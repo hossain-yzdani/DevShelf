@@ -1,7 +1,7 @@
 import { Bot, InlineKeyboard, InputFile } from "grammy";
 import { logger } from "../utils/logger";
 import { ResourceService } from "../services/resource.service";
-import { Resource, ResourceType } from "../types/resource.type";
+import { Resource , ResourceType } from "../../../../packages/types/resource.type";
 import { Readable } from "node:stream";
 import { FileService } from "../services/file.service";
 import { buildResourceKeyboard } from "../keyboards/resource.keyboard";
@@ -167,19 +167,19 @@ export function registerResourceCallbacks(bot: Bot) {
 
 function formatResourceMessage(resource: Resource): string {
   const typeEmojis: Record<ResourceType, string> = {
-    BOOK: "📚",
-    VIDEO: "🎬",
-    ARTICLE: "📄",
-    AUDIO: "🎧",
-    COURSE: "🎓",
+    book: "📚",
+    video: "🎬",
+    article: "📄",
+    audio: "🎧",
+    course: "🎓",
   };
 
   const typeLabels: Record<ResourceType, string> = {
-    BOOK: "Book",
-    VIDEO: "Video",
-    ARTICLE: "Article",
-    AUDIO: "Audio",
-    COURSE: "Course",
+    book: "Book",
+    video: "Video",
+    article: "Article",
+    audio: "Audio",
+    course: "Course",
   };
 
   const type = resource.type as ResourceType;
