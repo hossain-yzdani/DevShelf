@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users } from "lucide-react";
+import { LucideXOctagon, Users } from "lucide-react";
 import Pagination from "@/components/ui/pagination/pagination";
 import SearchBox from "@/components/ui/searchBox/searchBox";
 import Header from "@/components/main/Header/Header";
@@ -13,6 +13,7 @@ import UpdateUserModal from "@/components/users/modals/updateUser.modal";
 import DeleteConfirmModal from "@/components/resources/modals/deleteResource.modal";
 
 export default function UsersPage() {
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[] | []>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -38,8 +39,15 @@ export default function UsersPage() {
   );
 
   const fetchData = async () => {
-    const users = await UsersApi.getAll();
-    setUsers(users);
+    try {
+      setLoading(true);
+      const users = await UsersApi.getAll();
+      setUsers(users);
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = (user: User) => {
@@ -55,7 +63,7 @@ export default function UsersPage() {
   const deleteUser = async () => {
     try {
       if (!savedUser || !savedUser.id) {
-        throw new Error('Saved User is not valid');
+        throw new Error("Saved User is not valid");
       }
       const response = await UsersApi.delete(savedUser?.id);
       setDeleteModalOpen(false);
@@ -63,7 +71,7 @@ export default function UsersPage() {
     } catch (error: any) {
       console.log(error.message);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -84,18 +92,12 @@ export default function UsersPage() {
         placeholder="کاربران"
       />
 
-      {paginatedUsers.length === 0 ? (
-        <div className="text-center py-12 bg-[#171717] rounded-xl border border-white/5">
-          <Users size={48} className="text-gray-600 mx-auto" />
-          <p className="text-gray-400 mt-3">هیچ کاربری یافت نشد</p>
-        </div>
-      ) : (
-        <UsersTable
-          paginatedUsers={paginatedUsers}
-          handleDelete={handleDelete}
-          handleUpdata={handleUpdata}
-        />
-      )}
+      <UsersTable
+        paginatedUsers={paginatedUsers}
+        handleDelete={handleDelete}
+        handleUpdata={handleUpdata}
+        loading={loading}
+      />
 
       <Pagination
         totalPages={totalPages}
@@ -121,7 +123,6 @@ export default function UsersPage() {
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={deleteUser}
       />
-
     </div>
   );
 }

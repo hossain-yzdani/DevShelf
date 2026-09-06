@@ -1,14 +1,20 @@
 import { Tag as TypeTag } from "../../../../packages/types/tag.type";
 import { Hash, Tag } from "lucide-react";
 import TagActions from "../ui/actions/tagActions";
+import TagsGridSkeleton from "./skeleton/tagsGris";
 
 interface TProps {
   paginatedTags: TypeTag[];
   handleDelete: (tag: TypeTag) => void;
   handleEdit: (tag: TypeTag) => void;
+  loading: boolean;
 }
 
-const TagsGrid = ({ paginatedTags, handleDelete, handleEdit }: TProps) => {
+const TagsGrid = ({ paginatedTags, handleDelete, handleEdit, loading }: TProps) => {
+  if (loading === true) {
+    return <TagsGridSkeleton />
+  }
+
   return (
     <>
       {paginatedTags.length === 0 ? (

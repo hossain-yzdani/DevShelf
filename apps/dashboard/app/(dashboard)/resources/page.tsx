@@ -18,7 +18,7 @@ export default function ResourcesPage() {
   const [selectedType, setSelectedType] = useState<Resource["type"] | "ALL">(
     "ALL",
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -31,10 +31,13 @@ export default function ResourcesPage() {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const resources = await ResourcesApi.getAll();
       setResources(resources);
     } catch (error) {
       return;
+    } finally {
+      setLoading(false)
     }
   };
 

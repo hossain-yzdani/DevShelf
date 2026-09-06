@@ -5,6 +5,7 @@ import { BookOpen } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import GridModeItem from "./gridModeItem";
 import ListModeItem from "./listModeItem";
+import GridModeSkeleton from "./skeletons/resources";
 
 interface TProps {
   resources: Resource[];
@@ -42,19 +43,22 @@ const Resources = (props: TProps) => {
     currentPage * itemsPerPage,
   );
 
+  if (props.loading === true) {
+    return <GridModeSkeleton />;
+  }
+
+  if (paginatedResources.length === 0) {
+    return (
+      <div className="text-center py-12 bg-[#171717] rounded-xl border border-white/5">
+        <BookOpen size={48} className="text-gray-600 mx-auto" />
+        <p className="text-gray-400 mt-3">هیچ منبعی یافت نشد</p>
+      </div>
+    );
+  }
+
   return (
     <>
-      {props.loading ? (
-        <div className="text-center py-12">
-          <div className="w-8 h-8 border-2 border-[#F5F5F5]/20 border-t-[#F5F5F5] rounded-full animate-spin mx-auto" />
-          <p className="text-gray-400 mt-3">در حال بارگذاری...</p>
-        </div>
-      ) : paginatedResources.length === 0 ? (
-        <div className="text-center py-12 bg-[#171717] rounded-xl border border-white/5">
-          <BookOpen size={48} className="text-gray-600 mx-auto" />
-          <p className="text-gray-400 mt-3">هیچ منبعی یافت نشد</p>
-        </div>
-      ) : props.viewMode === "grid" ? (
+      {props.viewMode === "grid" ? (
         <GridModeItem
           paginatedResources={paginatedResources}
           handleDelete={props.handleDelete}

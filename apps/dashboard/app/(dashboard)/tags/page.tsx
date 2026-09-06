@@ -7,12 +7,12 @@ import SearchBox from "@/components/ui/searchBox/searchBox";
 import Pagination from "@/components/ui/pagination/pagination";
 import { Tag } from "../../../../../packages/types/tag.type";
 import { TagsApi } from "@/utils/tags/tags.api";
-import { CategoriesApi } from "@/utils/category/categories.api";
 import CreateTagModal from "@/components/tags/modals/createTag.modal";
 import UpdateTagModal from "@/components/tags/modals/updateTag.modal";
 import DeleteConfirmModal from "@/components/resources/modals/deleteResource.modal";
 
 export default function TagsPage() {
+  const [loading, setLoading] = useState(true);
   const [tags, setTags] = useState<Tag[] | []>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,10 +38,13 @@ export default function TagsPage() {
 
   async function fetchData() {
     try {
+      setLoading(true);
       const tags = await TagsApi.getAll();
       setTags(tags);
     } catch (error) {
       console.error("Failed to fetch tags:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -91,6 +94,7 @@ export default function TagsPage() {
         paginatedTags={paginatedTags}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
+        loading={loading}
       />
 
       <Pagination

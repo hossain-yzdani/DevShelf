@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import AllResources from "@/components/main/AllResources/allResources";
 import { Resource } from "../../../../packages/types/resource.type";
 import FeaturedResources from "@/components/main/FeaturedResources/featuredResources";
@@ -8,11 +8,14 @@ import Stats from "@/components/main/Stats/stats";
 import Header from "@/components/main/Header/Header";
 import { typeColors, typeLabels } from "@/data/types";
 import { ResourcesApi } from "@/utils/resources/resource.api";
+import StatsSkeleton from "@/components/main/Skeletons/stats";
+import FeaturedResourcesSkeleton from "@/components/main/Skeletons/featuredResources";
+import AllResourcesSkeleton from "@/components/main/Skeletons/allResources";
 
 export default function DashboardPage() {
   const [resources, setResources] = useState<Resource[] | []>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +25,8 @@ export default function DashboardPage() {
         setResources(resources);
       } catch (error) {
         return;
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -42,22 +47,29 @@ export default function DashboardPage() {
         description="مدیریت منابع آموزشی و کتاب‌های برنامه‌نویسی"
         button="منبع جدید"
       />
+      {loading ? <StatsSkeleton /> : <Stats resources={resources} />}
 
-      <Stats resources={resources} />
+      {loading ? (
+        <FeaturedResourcesSkeleton />
+      ) : (
+        <FeaturedResources
+          featuredResources={featuredResources}
+          typeColors={typeColors}
+          typeLabels={typeLabels}
+        />
+      )}
 
-      <FeaturedResources
-        featuredResources={featuredResources}
-        typeColors={typeColors}
-        typeLabels={typeLabels}
-      />
-
-      <AllResources
-        resources={resources}
-        loading={loading}
-        setLoading={setLoading}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-      />
+      {loading ? (
+        <AllResourcesSkeleton viewMode={viewMode} />
+      ) : (
+        <AllResources
+          resources={resources}
+          loading={loading}
+          setLoading={setLoading}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+        />
+      )}
     </div>
   );
 }

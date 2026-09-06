@@ -13,6 +13,7 @@ import UpdateCategoryModal from "@/components/categories/modals/updateCategory.m
 import DeleteConfirmModal from "@/components/resources/modals/deleteResource.modal";
 
 export default function CategoriesPage() {
+  const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<Category[] | []>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,10 +40,13 @@ export default function CategoriesPage() {
 
   async function fetchData() {
     try {
+      setLoading(true);
       const categories = await CategoriesApi.getAll();
       setCategories(categories);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -88,18 +92,12 @@ export default function CategoriesPage() {
         placeholder="دسته بندی ها"
       />
 
-      {paginatedCategories.length === 0 ? (
-        <div className="text-center py-12 bg-[#171717] rounded-xl border border-white/5">
-          <FolderOpen size={48} className="text-gray-600 mx-auto" />
-          <p className="text-gray-400 mt-3">هیچ دسته‌بندی یافت نشد</p>
-        </div>
-      ) : (
-        <CategoriesGrid
-          paginatedCategories={paginatedCategories}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-        />
-      )}
+      <CategoriesGrid
+        paginatedCategories={paginatedCategories}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        loading={loading}
+      />
 
       <Pagination
         totalPages={totalPages}
