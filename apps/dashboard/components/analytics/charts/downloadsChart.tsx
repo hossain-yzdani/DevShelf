@@ -11,33 +11,50 @@ import {
   Legend,
 } from "recharts";
 
-const data = [
-  { date: "۱۴۰۴/۰۱/۰۱", downloads: 12, users: 8 },
-  { date: "۱۴۰۴/۰۱/۰۲", downloads: 18, users: 12 },
-  { date: "۱۴۰۴/۰۱/۰۳", downloads: 10, users: 6 },
-  { date: "۱۴۰۴/۰۱/۰۴", downloads: 25, users: 15 },
-  { date: "۱۴۰۴/۰۱/۰۵", downloads: 30, users: 22 },
-  { date: "۱۴۰۴/۰۱/۰۶", downloads: 22, users: 14 },
-  { date: "۱۴۰۴/۰۱/۰۷", downloads: 35, users: 28 },
-];
+import { ChartDataPoint } from "../../../../../packages/types/analytics";
+import toPersianDate from "@/utils/toPersain/toPersianDate";
 
-export function DownloadsChart() {
+interface DownloadsChartProps {
+  downloadsData?: ChartDataPoint[];
+  userGrowthData?: ChartDataPoint[];
+  title?: string;
+}
+
+
+
+export function DownloadsChart({
+  downloadsData = [],
+  userGrowthData = [],
+  title = "دانلودها و رشد کاربران",
+}: DownloadsChartProps) {
+  const combinedData = downloadsData.map((item, index) => ({
+    date: toPersianDate(item.date),
+    downloads: parseInt(item.count, 10),
+    users: parseInt(userGrowthData[index]?.count || "0", 10),
+  }));
+
+  if (combinedData.length === 0) {
+    return (
+      <div className="bg-[#171717] rounded-xl border border-white/5 p-5 flex items-center justify-center h-75">
+        <p className="text-gray-400">داده‌ای برای نمایش وجود ندارد</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#171717] rounded-xl border border-white/5 p-5 pl-0">
-      <h3 className="text-[#F5F5F5] font-medium mb-4">
-        دانلودها در ۷ روز اخیر
-      </h3>
+      <h3 className="text-[#F5F5F5] font-medium mb-4">{title}</h3>
       <ResponsiveContainer width="100%" height={250}>
-        <LineChart data={data}>
+        <LineChart data={combinedData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" />
           <XAxis dataKey="date" stroke="#666" fontSize={12} />
-          <YAxis dataKey="downloads" stroke="#666" fontSize={12} />
+          <YAxis stroke="#666" fontSize={12} />
           <Tooltip
             contentStyle={{
               backgroundColor: "#171717",
               borderColor: "#2a2a2a",
               color: "#F5F5F5",
-              borderRadius: '10px'
+              borderRadius: "10px",
             }}
           />
           <Legend />

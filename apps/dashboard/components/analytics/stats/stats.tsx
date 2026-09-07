@@ -1,7 +1,8 @@
 import { ArrowUp, BookOpen, Download, Heart, Users } from "lucide-react";
+import { StatsData } from "../../../../../packages/types/analytics";
 
 interface TProps {
-  statsData: any;
+  statsData: StatsData;
 }
 
 const StatsAnalytics = ({ statsData }: TProps) => {
@@ -15,14 +16,14 @@ const StatsAnalytics = ({ statsData }: TProps) => {
           </div>
           <span className="text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
             <ArrowUp size={12} />
-            {statsData.growth.resources}%
+            {statsData.growth.downloads}%
           </span>
         </div>
         <p className="text-2xl font-bold text-[#F5F5F5] mt-2">
           {statsData.totalResources}
         </p>
         <p className="text-gray-500 text-xs mt-1">
-          +{statsData.growth.resources} نسبت به ماه قبل
+          +{statsData.growth.downloads}% نسبت به ماه قبل
         </p>
       </div>
 
@@ -60,7 +61,7 @@ const StatsAnalytics = ({ statsData }: TProps) => {
         <p className="text-2xl font-bold text-[#F5F5F5] mt-2">
           {statsData.totalFavorites}
         </p>
-        <p className="text-gray-500 text-xs mt-1">از ۲۸۴ کاربر</p>
+        <p className="text-gray-500 text-xs mt-1">از {statsData.totalUsers} کاربر</p>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
-import { Resource } from "../../../../../packages/types/resource.type";
+import { DashboardData } from "../../../../../packages/types/analytics";
 import { BookMarked, BookOpen, TrendingUp, Users } from "lucide-react";
 
 interface TProps {
-  resources: Resource[];
+  data: DashboardData;
 }
 
-const Stats = (props: TProps) => {
+const Stats = ({data}: TProps) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div className="bg-[#171717] rounded-xl p-4 border border-white/5">
@@ -14,7 +14,7 @@ const Stats = (props: TProps) => {
           <span>کل منابع</span>
         </div>
         <p className="text-2xl font-bold text-[#F5F5F5] mt-1">
-          {props.resources.length}
+          {data.stats.totalResources}
         </p>
       </div>
       <div className="bg-[#171717] rounded-xl p-4 border border-white/5">
@@ -23,9 +23,7 @@ const Stats = (props: TProps) => {
           <span>دانلودها</span>
         </div>
         <p className="text-2xl font-bold text-[#F5F5F5] mt-1">
-          {props.resources
-            .reduce((acc, r) => acc + r.downloadsCount, 0)
-            .toLocaleString()}
+          {data.stats.totalDownloads}
         </p>
       </div>
       <div className="bg-[#171717] rounded-xl p-4 border border-white/5">
@@ -33,14 +31,18 @@ const Stats = (props: TProps) => {
           <Users size={16} />
           <span>کاربران فعال</span>
         </div>
-        <p className="text-2xl font-bold text-[#F5F5F5] mt-1">1,284</p>
+        <p className="text-2xl font-bold text-[#F5F5F5] mt-1">
+          {data.stats.totalUsers}
+        </p>
       </div>
       <div className="bg-[#171717] rounded-xl p-4 border border-white/5">
         <div className="flex items-center gap-2 text-gray-400 text-sm">
           <BookMarked size={16} />
           <span>علاقه‌مندی‌ها</span>
         </div>
-        <p className="text-2xl font-bold text-[#F5F5F5] mt-1">342</p>
+        <p className="text-2xl font-bold text-[#F5F5F5] mt-1">
+          {data.stats.totalFavorites}
+        </p>
       </div>
     </div>
   );

@@ -9,6 +9,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { ChartDataPoint } from "../../../../../packages/types/analytics";
+import toPersianDate from "@/utils/toPersain/toPersianDate";
 
 const data = [
   { date: "۱۴۰۴/۰۱/۰۱", users: 8 },
@@ -20,7 +22,16 @@ const data = [
   { date: "۱۴۰۴/۰۱/۰۷", users: 42 },
 ];
 
-export function UserGrowthChart() {
+interface TProps {
+  users: ChartDataPoint[];
+}
+
+export function UserGrowthChart({ users }: TProps) {
+  const data = users.map((user, index) => ({
+    date: toPersianDate(user.date),
+    count: Number(user.count)
+  }))
+
   return (
     <div className="bg-[#171717] rounded-xl border border-white/5 p-5">
       <h3 className="text-[#F5F5F5] font-medium mb-4">رشد کاربران</h3>
@@ -39,7 +50,7 @@ export function UserGrowthChart() {
           />
           <Area
             type="monotone"
-            dataKey="users"
+            dataKey="count"
             stroke="#22c55e"
             fill="#22c55e"
             fillOpacity={0.15}

@@ -10,6 +10,7 @@ import { DownloadsModule } from './modules/downloads/downloads.module';
 import { SearchesModule } from './modules/searches/searches.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 import databaseConfig from './config/database.config';
 
@@ -43,6 +44,7 @@ import databaseConfig from './config/database.config';
     DownloadsModule,
     SearchesModule,
     AuthModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule {}

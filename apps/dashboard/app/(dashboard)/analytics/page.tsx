@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Filter,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Filter } from "lucide-react";
 import { DownloadsChart } from "@/components/analytics/charts/downloadsChart";
 import StatsAnalytics from "@/components/analytics/stats/stats";
 import RecentActivities from "@/components/analytics/recentActivities/recentActivities";
@@ -12,18 +10,14 @@ import { UserGrowthChart } from "@/components/analytics/charts/userGrowthChart";
 import { CategoryChart } from "@/components/analytics/charts/categoryChart";
 import { PieChartComponent } from "@/components/analytics/charts/pieChartComponent";
 import { PopularResourcesTable } from "@/components/analytics/table/popularResourcesTable";
-
-const statsData = {
-  totalResources: 156,
-  totalUsers: 284,
-  totalDownloads: 1240,
-  totalFavorites: 342,
-  growth: {
-    downloads: 23,
-    users: 12,
-    resources: 8,
-  },
-};
+import { Resource } from "../../../../../packages/types/resource.type";
+import { ResourcesApi } from "@/utils/resources/resource.api";
+import { UsersApi } from "@/utils/users/users.api";
+import { User } from "../../../../../packages/types/user.type";
+import { AnalyticsApi } from "@/utils/analytics/analytics.api";
+import { DashboardData } from "../../../../../packages/types/analytics";
+import AnalyticsPageSkeleton from "@/components/analytics/skeleton/analyticsSkeleton";
+import { useRouter } from "next/navigation";
 
 const recentActivities = [
   {
@@ -75,18 +69,62 @@ export const TIME_RANGE_OPTIONS: TimeRangeOption[] = [
   { value: "365", label: "یک سال اخیر" },
 ];
 
-
 export default function AnalyticsPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [users, setUsers] = useState<User[] | []>([]);
+  const [resources, setResources] = useState<Resource[] | []>([]);
+
+  const [data, setData] = useState<DashboardData>();
+
+  const [isLoading, setIsLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<string>("30");
+
+  const router = useRouter();
 
   const handleTimeRangeChange = (val: string) => {
     setTimeRange(val);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await AnalyticsApi.getData();
+
+        const resources = await ResourcesApi.getAll();
+        const users = await UsersApi.getAll();
+        setResources(resources);
+        setUsers(users);
+        setData(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const statsData = {
+    totalResources: resources.length,
+    totalUsers: users.length,
+    totalDownloads: resources
+      .reduce((a, b) => a + b.downloadsCount, 0)
+      .toLocaleString(),
+    totalFavorites: resources
+      .reduce((a, b) => a + b.favoritesCount, 0)
+      .toLocaleString(),
+    growth: {
+      downloads: 23,
+      users: 12,
+      resources: 8,
+    },
+  };
+
+  if (isLoading || !data) {
+    return <AnalyticsPageSkeleton />;
+  }
+
   return (
     <div className="space-y-6">
-
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-4">
           <h1 className="text-3xl font-bold text-[#F5F5F5]">آمار و تحلیل</h1>
@@ -108,18 +146,29 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <StatsAnalytics statsData={statsData} />
+      <StatsAnalytics statsData={data.stats} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <DownloadsChart />
-        <UserGrowthChart />
-        <CategoryChart />
-        <PieChartComponent />
+        <DownloadsChart
+          downloadsData={data?.charts.downloads}
+          userGrowthData={data?.charts.userGrowth}
+        />
+        <UserGrowthChart users={data?.charts.userGrowth} />
+        <CategoryChart data={data?.charts.categories} />
+        <PieChartComponent data={data?.charts.categories} />
       </div>
 
-      <PopularResourcesTable />
+      <PopularResourcesTable
+        data={data.popularResources}
+        title="پرطرفدارترین منابع"
+        onViewAll={() => router.push("/resources")}
+      />
 
-      <RecentActivities recentActivities={recentActivities} />
+      <RecentActivities
+        recentActivities={data.recentActivities}
+        title="فعالیت‌های اخیر"
+        onViewAll={() => router.push("/activities")}
+      />
     </div>
   );
 }
