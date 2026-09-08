@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
@@ -13,6 +13,11 @@ export class TagsController {
   }
 
   @Get()
+  find(@Query('limit') limit: string, @Query('page') page: string) {
+    return this.tagsService.find(Number(page), Number(limit));
+  }
+
+  @Get('all')
   findAll() {
     return this.tagsService.findAll();
   }

@@ -1,26 +1,31 @@
 import { Tag } from "../../../../packages/types/tag.type";
-import { apiClient } from "../api";
+import apiClient from "../api";
 
 
 export const TagsApi = {
+  get: async (page: number, limit: number) => {
+    const response = await apiClient.get(`tags/?limit=${limit}&page=${page}`)
+    return response.data;
+  },
+    
   getAll: async (): Promise<Tag[]> => {
     const response = await apiClient.get<Tag[]>("/tags");
-    return response;
+    return response.data;
   },
 
   getBySlug: async (slug: string): Promise<Tag> => {
     const response = await apiClient.get<Tag>(`/tags/${slug}`);
-    return response;
+    return response.data;
   },
 
   getResources: async (slug: string): Promise<any[]> => {
     const response = await apiClient.get<any[]>(`/tags/${slug}/resources`);
-    return response;
+    return response.data;
   },
 
   getPopular: async (limit: number = 10): Promise<Tag[]> => {
-    const response = await apiClient.get<Tag[]>("/tags/popular", { limit });
-    return response;
+    const response = await apiClient.get<Tag[]>("/tags/popular", { params: { limit } });
+    return response.data;
   },
 
   create: async (data: {
@@ -29,7 +34,7 @@ export const TagsApi = {
     slug?: string;
   }): Promise<Tag> => {
     const response = await apiClient.post<Tag>("/tags", data);
-    return response;
+    return response.data;
   },
 
   update: async (
@@ -37,7 +42,7 @@ export const TagsApi = {
     data: { name?: string; description?: string; slug?: string },
   ): Promise<Tag> => {
     const response = await apiClient.patch<Tag>(`/tags/${slug}`, data);
-    return response;
+    return response.data;
   },
 
   delete: async (slug: string): Promise<void> => {
@@ -46,11 +51,11 @@ export const TagsApi = {
 
   getStats: async (): Promise<{ total: number }> => {
     const response = await apiClient.get<{ total: number }>("/tags/stats");
-    return response;
+    return response.data;
   },
 
   search: async (query: string): Promise<Tag[]> => {
-    const response = await apiClient.get<Tag[]>("/tags/search", { q: query });
-    return response;
+    const response = await apiClient.get<Tag[]>("/tags/search", { params: { q: query } });
+    return response.data;
   },
 };

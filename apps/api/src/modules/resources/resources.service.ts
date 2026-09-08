@@ -56,6 +56,35 @@ export class ResourcesService {
     return ResourceMapper.toResponseDtoArray(resources);
   }
 
+  async find(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.resourceRepository.findAndCount({
+      skip: Number(skip),
+      take: limit,
+      order: {
+        createdAt: "DESC"
+      },
+      relations: {
+        category: true,
+        tags: true,
+        downloads: true,
+        favorites: true
+      }
+    })
+
+    const newData = ResourceMapper.toResponseDtoArray(data);
+
+    return {
+      data: newData,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
   async findOne(slug: string): Promise<ResourceResponseDto> {
     const resource = await this.resourceRepository.findOne({
       where: { slug },

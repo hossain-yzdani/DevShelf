@@ -23,6 +23,11 @@ export class ResourcesController {
   }
 
   @Get()
+  find(@Query('limit') limit: string, @Query('page') page: string) {
+    return this.resourcesService.find(Number(page), Number(limit));
+  }
+
+  @Get('all')
   findAll() {
     return this.resourcesService.findAll();
   }

@@ -25,6 +25,30 @@ export class TagsService {
     return TagMapper.toResponseDtoArray(tags);
   }
 
+  async find(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.tagRepository.findAndCount({
+      skip: Number(skip),
+      take: limit,
+      order: {
+        createdAt: "DESC"
+      },
+      relations: {
+        resources: true,
+      }
+    })
+
+    return {
+      data,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      }
+    }
+  }
+
   async findOne(slug: string): Promise<TagResponseDto> {
     const tag = await this.tagRepository.findOne({
       where: { slug },

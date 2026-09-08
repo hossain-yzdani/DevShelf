@@ -30,6 +30,23 @@ export interface Resource {
   updatedAt: Date;
 }
 
+export interface Resource {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  type: ResourceType;
+  fileUrl: string;
+  posterUrl: string;
+  author: string;
+  favoritesCount: number;
+  downloadsCount: number;
+  category: Category;
+  tags: Tag[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ResourceFilters {
   search?: string;
   categoryId?: string;

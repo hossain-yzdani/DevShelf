@@ -2,6 +2,11 @@ import { Resource } from "../../../../packages/types/resource.type";
 import apiClient from "../api";
 
 export const ResourcesApi = {
+  get: async (page: number, limit: number) => {
+    const response = await apiClient.get(`resources/?limit=${limit}&page=${page}`);
+    return response.data;
+  },
+
   getAll: async (params?: {
     search?: string;
     type?: string;
@@ -12,23 +17,22 @@ export const ResourcesApi = {
     sortBy?: string;
     sortOrder?: "ASC" | "DESC";
   }) => {
-    const response = await apiClient.get("/resources", { params });
-    console.log(response.data);
+    const response = await apiClient.get("resources/all", { params });
     return response.data;
   },
 
   getBySlug: async (slug: string) => {
-    const response = await apiClient.get(`/resources/${slug}`);
+    const response = await apiClient.get(`resources/${slug}`);
     return response.data;
   },
 
   getById: async (id: string) => {
-    const response = await apiClient.get(`/resources/id/${id}`);
+    const response = await apiClient.get(`resources/id/${id}`);
     return response.data;
   },
 
   getPopular: async (limit: number = 10) => {
-    const response = await apiClient.get("/resources/popular", { 
+    const response = await apiClient.get("resources/popular", { 
       params: { limit }
      });
     return response.data;
@@ -36,7 +40,7 @@ export const ResourcesApi = {
 
   // دریافت آخرین منابع
   getLatest: async (limit: number = 10) => {
-    const response = await apiClient.get("/resources/latest", { 
+    const response = await apiClient.get("resources/latest", { 
       params: { limit }
      });
     return response.data;
@@ -44,7 +48,7 @@ export const ResourcesApi = {
 
   // دریافت منابع با بیشترین دانلود
   getMostDownloaded: async (limit: number = 10) => {
-    const response = await apiClient.get("/resources/most-downloaded", {
+    const response = await apiClient.get("resources/most-downloaded", {
       params: { limit },
     });
     return response.data;
@@ -52,7 +56,7 @@ export const ResourcesApi = {
 
   // جستجوی منابع
   search: async (query: string, limit: number = 10) => {
-    const response = await apiClient.get("/resources/search", {
+    const response = await apiClient.get("resources/search", {
       params: { q: query, limit },
     });
     return response.data;
@@ -67,7 +71,7 @@ export const ResourcesApi = {
     author?: string;
     limit?: number;
   }) => {
-    const response = await apiClient.get("/resources/advanced-search", {
+    const response = await apiClient.get("resources/advanced-search", {
       params: filters,
     });
     return response.data;
@@ -83,7 +87,7 @@ export const ResourcesApi = {
     category: string;
     tags?: string[];
   }) => {
-    const response = await apiClient.post("/resources", data);
+    const response = await apiClient.post("resources", data);
     return response.data;
   },
 
@@ -100,17 +104,17 @@ export const ResourcesApi = {
       tags?: string[];
     },
   ) => {
-    const response = await apiClient.patch(`/resources/${slug}`, data);
+    const response = await apiClient.patch(`resources/${slug}`, data);
     return response.data;
   },
 
   delete: async (slug: string) => {
-    const response = await apiClient.delete(`/resources/${slug}`);
+    const response = await apiClient.delete(`resources/${slug}`);
     return response.data;
   },
 
   getStats: async () => {
-    const response = await apiClient.get("/resources/stats");
+    const response = await apiClient.get("resources/stats");
     return response.data;
   },
 
@@ -122,7 +126,7 @@ export const ResourcesApi = {
   },
 
   getByTag: async (tagSlug: string) => {
-    const response = await apiClient.get(`/tags/${tagSlug}/resources`);
+    const response = await apiClient.get(`tags/${tagSlug}/resources`);
     return response.data;
   },
 };

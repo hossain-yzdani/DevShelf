@@ -90,9 +90,7 @@ export default function AnalyticsPage() {
         const data = await AnalyticsApi.getData();
 
         const resources = await ResourcesApi.getAll();
-        const users = await UsersApi.getAll();
         setResources(resources);
-        setUsers(users);
         setData(data);
       } catch (error) {
         console.log(error);

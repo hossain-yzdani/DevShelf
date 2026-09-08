@@ -21,7 +21,7 @@ export default function ResourcesPage() {
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
@@ -29,13 +29,12 @@ export default function ResourcesPage() {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const totalPages = 1;
-
   const fetchData = async () => {
     try {
       setLoading(true);
-      const resources = await ResourcesApi.getAll();
-      setResources(resources);
+      const resources = await ResourcesApi.get(currentPage, 24);
+      setTotalPages(resources.meta.totalPages);
+      setResources(resources.data);
     } catch (error) {
       return;
     } finally {
@@ -66,9 +65,13 @@ export default function ResourcesPage() {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  }
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="space-y-6">
@@ -105,7 +108,7 @@ export default function ResourcesPage() {
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={handlePageChange}
       />
 
       <CreateResourceModal

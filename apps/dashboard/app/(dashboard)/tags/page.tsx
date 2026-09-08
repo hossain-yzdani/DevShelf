@@ -15,8 +15,9 @@ export default function TagsPage() {
   const [loading, setLoading] = useState(true);
   const [tags, setTags] = useState<Tag[] | []>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
@@ -30,17 +31,12 @@ export default function TagsPage() {
       t.slug.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const totalPages = Math.ceil(filteredTags.length / itemsPerPage);
-  const paginatedTags = filteredTags.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-
   async function fetchData() {
     try {
       setLoading(true);
-      const tags = await TagsApi.getAll();
-      setTags(tags);
+      const tags = await TagsApi.get(currentPage, 8);
+      setTotalPages(tags.meta.totalPages);
+      setTags(tags.data);
     } catch (error) {
       console.error("Failed to fetch tags:", error);
     } finally {
@@ -71,9 +67,13 @@ export default function TagsPage() {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  }
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="space-y-6">
@@ -91,7 +91,7 @@ export default function TagsPage() {
       />
 
       <TagsGrid
-        paginatedTags={paginatedTags}
+        paginatedTags={tags}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         loading={loading}
@@ -100,7 +100,7 @@ export default function TagsPage() {
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={handlePageChange}
       />
 
       <CreateTagModal
