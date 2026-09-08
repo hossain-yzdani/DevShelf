@@ -2,6 +2,11 @@ import { Category } from "../../../../packages/types/category.type";
 import apiClient from "../api";
 
 export const CategoriesApi = {
+  get: async (page: number, limit: number) => {
+    const response = await apiClient.get(`categories/?page=${page}&limit=${limit}`);
+    return response.data;
+  },
+
   getAll: async (): Promise<Category[]> => {
     const response = await apiClient.get<Category[]>("/categories");
     return response.data;

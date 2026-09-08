@@ -16,7 +16,9 @@ export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<Category[] | []>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
@@ -24,25 +26,18 @@ export default function CategoriesPage() {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const itemsPerPage = 5;
-
   const filteredCategories = categories.filter(
     (c) =>
       c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.description?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
-  const paginatedCategories = filteredCategories.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-
   async function fetchData() {
     try {
       setLoading(true);
-      const categories = await CategoriesApi.getAll();
-      setCategories(categories);
+      const categories = await CategoriesApi.get(currentPage, 8);
+      setTotalPages(categories.meta.totalPages);
+      setCategories(categories.data);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
     } finally {
@@ -52,7 +47,7 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   const handleEdit = (item: Category) => {
     setSavedCategory(item);
@@ -77,6 +72,10 @@ export default function CategoriesPage() {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="space-y-6">
       <Header
@@ -93,7 +92,7 @@ export default function CategoriesPage() {
       />
 
       <CategoriesGrid
-        paginatedCategories={paginatedCategories}
+        paginatedCategories={categories}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         loading={loading}
@@ -102,7 +101,7 @@ export default function CategoriesPage() {
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={handlePageChange}
       />
 
       <CreateCategoryModal

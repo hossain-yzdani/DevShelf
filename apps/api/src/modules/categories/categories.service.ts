@@ -27,6 +27,27 @@ export class CategoriesService {
     return CategoryMapper.toResponseDtoArray(categories);
   }
 
+  async find(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.categoryRepository.findAndCount({
+      skip,
+      take: limit,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return {
+      data,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
   async findOne(slug: string): Promise<CategoryResponseDto> {
     const category = await this.categoryRepository.findOne({
       where: { slug },

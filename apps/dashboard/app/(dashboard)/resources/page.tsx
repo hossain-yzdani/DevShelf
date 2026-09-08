@@ -19,7 +19,9 @@ export default function ResourcesPage() {
     "ALL",
   );
   const [loading, setLoading] = useState(true);
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
