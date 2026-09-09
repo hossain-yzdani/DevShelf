@@ -24,7 +24,7 @@ const Sidebar = () => {
       >
         <div className="flex items-center gap-3 px-6 h-16 border-b border-white/5">
           <div className="w-8 h-8 flex items-center justify-center">
-            <Image src={'/logo/logoDevShelf.png'} alt="DevShelf Logo" />
+            <img src={'/logo/logoDevShelf.png'} alt="DevShelf Logo" />
           </div>
           <span className="text-lg font-bold text-[#F5F5F5]">DevShelf</span>
           <span className="text-[10px] text-gray-500 bg-[#0A0A0A] px-2 py-0.5 rounded-full">

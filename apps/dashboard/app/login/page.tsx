@@ -19,14 +19,41 @@ export default function LoginPage() {
     setError(null);
     setIsLoading(true);
 
-    setTimeout(() => {
-      if (username === "admin" && password === "admin123") {
-        router.push("/");
-      } else {
-        setError("نام کاربری یا رمز عبور اشتباه است");
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ username, password }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "نام کاربری یا رمز عبور اشتباه است");
       }
+
+      localStorage.setItem(
+        "access_token",
+        data.accessToken || data.access_token,
+      );
+      localStorage.setItem("user", JSON.stringify(data.user || data.user));
+
+      document.cookie = `access_token=${
+        data.accessToken || data.access_token
+      }; path=/; max-age=${60 * 60 * 24 * 7}`; // 7 روز
+
+      router.push("/");
+    } catch (error: any) {
+      setError(error.message || "خطا در ارتباط با سرور");
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -39,7 +66,7 @@ export default function LoginPage() {
       <div className="relative w-full max-w-100">
         <div className="text-center mb-8 flex itemx-center justify-center gap-2">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4">
-            <Image src={"/logo/logoDevShelf.png"} alt="DevShelf Logo" />
+            <img src={"/logo/logoDevShelf.png"} alt="DevShelf Logo" />
           </div>
           <div className="flex flex-col items-center">
             <h1 className="text-2xl font-bold text-[#F5F5F5]">DevShelf</h1>
@@ -50,7 +77,9 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-[#171717] rounded-2xl border border-white/5 p-8">
-          <h2 className="text-lg font-medium text-[#F5F5F5] mb-1 text-center">ورود</h2>
+          <h2 className="text-lg font-medium text-[#F5F5F5] mb-1 text-center">
+            ورود
+          </h2>
           <p className="text-gray-400 text-sm mb-6 text-center">
             برای دسترسی به پنل مدیریت وارد شوید
           </p>
@@ -86,13 +115,13 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="رمز عبور خود را وارد کنید"
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#0A0A0A] border border-white/10 focus:border-white/20 focus:outline-none transition text-[#F5F5F5] placeholder-gray-500 pl-10"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#0A0A0A] border border-white/10 focus:border-white/20 focus:outline-none transition text-[#F5F5F5] placeholder-gray-500 pr-10"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#F5F5F5] transition"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#F5F5F5] transition"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -127,10 +156,6 @@ export default function LoginPage() {
             </p>
           </div>
         </div>
-
-        <p className="text-center text-xs text-gray-600 mt-6">
-          DevShelf v1.0.0
-        </p>
       </div>
     </div>
   );

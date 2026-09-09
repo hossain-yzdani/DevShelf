@@ -87,6 +87,19 @@ export class UsersService {
     });
   }
 
+  async findByUsername(username: string) {
+    return this.userRepository.findOne({
+      where: { username },
+      select: {
+        id: true,
+        username: true,
+        password: true,
+        role: true,
+        isActive: true,
+      },
+    });
+  }
+
   async findOneByTelegramId(id: number) {
     const user = await this.userRepository.findOne({
       where: { telegramId: id },
@@ -120,7 +133,7 @@ export class UsersService {
       //   ...user,
       //   password: hashedPassword,
       // };
-      Object.assign(user, {...updateUserDto, password: hashedPassword});
+      Object.assign(user, { ...updateUserDto, password: hashedPassword });
       await this.userRepository.save(user);
       return await this.userRepository.findOne({ where: { id } });
     } catch (error) {
