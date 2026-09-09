@@ -9,22 +9,22 @@ export const TagsApi = {
   },
     
   getAll: async (): Promise<Tag[]> => {
-    const response = await apiClient.get<Tag[]>("/tags");
+    const response = await apiClient.get<Tag[]>("tags/all");
     return response.data;
   },
 
   getBySlug: async (slug: string): Promise<Tag> => {
-    const response = await apiClient.get<Tag>(`/tags/${slug}`);
+    const response = await apiClient.get<Tag>(`tags/${slug}`);
     return response.data;
   },
 
   getResources: async (slug: string): Promise<any[]> => {
-    const response = await apiClient.get<any[]>(`/tags/${slug}/resources`);
+    const response = await apiClient.get<any[]>(`tags/${slug}/resources`);
     return response.data;
   },
 
   getPopular: async (limit: number = 10): Promise<Tag[]> => {
-    const response = await apiClient.get<Tag[]>("/tags/popular", { params: { limit } });
+    const response = await apiClient.get<Tag[]>("tags/popular", { params: { limit } });
     return response.data;
   },
 
@@ -33,7 +33,7 @@ export const TagsApi = {
     description: string;
     slug?: string;
   }): Promise<Tag> => {
-    const response = await apiClient.post<Tag>("/tags", data);
+    const response = await apiClient.post<Tag>("tags", data);
     return response.data;
   },
 
@@ -41,21 +41,21 @@ export const TagsApi = {
     slug: string,
     data: { name?: string; description?: string; slug?: string },
   ): Promise<Tag> => {
-    const response = await apiClient.patch<Tag>(`/tags/${slug}`, data);
+    const response = await apiClient.patch<Tag>(`tags/${slug}`, data);
     return response.data;
   },
 
   delete: async (slug: string): Promise<void> => {
-    await apiClient.delete<void>(`/tags/${slug}`);
+    await apiClient.delete<void>(`tags/${slug}`);
   },
 
   getStats: async (): Promise<{ total: number }> => {
-    const response = await apiClient.get<{ total: number }>("/tags/stats");
+    const response = await apiClient.get<{ total: number }>("tags/stats");
     return response.data;
   },
 
   search: async (query: string): Promise<Tag[]> => {
-    const response = await apiClient.get<Tag[]>("/tags/search", { params: { q: query } });
+    const response = await apiClient.get<Tag[]>("tags/search", { params: { q: query } });
     return response.data;
   },
 };

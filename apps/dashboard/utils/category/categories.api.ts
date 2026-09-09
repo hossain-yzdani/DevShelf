@@ -8,12 +8,12 @@ export const CategoriesApi = {
   },
 
   getAll: async (): Promise<Category[]> => {
-    const response = await apiClient.get<Category[]>("/categories");
+    const response = await apiClient.get<Category[]>("categories/all");
     return response.data;
   },
 
   getBySlug: async (slug: string): Promise<Category> => {
-    const response = await apiClient.get<Category>(`/categories/${slug}`);
+    const response = await apiClient.get<Category>(`categories/${slug}`);
     return response.data;
   },
 
@@ -29,7 +29,7 @@ export const CategoriesApi = {
     description: string;
     slug?: string;
   }): Promise<Category> => {
-    const response = await apiClient.post<Category>("/categories", data);
+    const response = await apiClient.post<Category>("categories", data);
     return response.data;
   },
 
@@ -38,19 +38,19 @@ export const CategoriesApi = {
     data: { name?: string; description?: string; slug?: string },
   ): Promise<Category> => {
     const response = await apiClient.patch<Category>(
-      `/categories/${slug}`,
+      `categories/${slug}`,
       data,
     );
     return response.data;
   },
 
   delete: async (slug: string): Promise<void> => {
-    await apiClient.delete<void>(`/categories/${slug}`);
+    await apiClient.delete<void>(`categories/${slug}`);
   },
 
   getStats: async (): Promise<{ total: number }> => {
     const response = await apiClient.get<{ total: number }>(
-      "/categories/stats",
+      "categories/stats",
     );
     return response.data;
   },

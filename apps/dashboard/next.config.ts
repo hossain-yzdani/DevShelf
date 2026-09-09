@@ -5,13 +5,22 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname, "../.."),
   },
+
   images: {
+    dangerouslyAllowLocalIP: true,
+
     remotePatterns: [
       {
         protocol: "https",
         hostname: "picsum.photos",
         port: "",
         pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3001",
+        pathname: "/uploads/**",
       },
     ],
   },

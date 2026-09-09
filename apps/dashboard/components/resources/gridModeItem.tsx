@@ -17,17 +17,14 @@ const GridModeItem = ({
   handleEdit,
 }: TProps) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       {paginatedResources.map((resource) => (
         <div
           key={resource.id}
           className="bg-[#171717] rounded-xl border border-white/5 hover:border-white/15 transition group overflow-hidden flex flex-col"
         >
-          <Link
-            href={`/resources/${resource.id}`}
-            className="block p-4 pb-2 flex-1"
-          >
-            <div className="relative w-full aspect-2/3 rounded-lg bg-[#0A0A0A] flex items-center justify-center border border-white/5 mb-3 overflow-hidden shadow-lg">
+          <Link href={`/resources/${resource.id}`} className="block flex-1">
+            <div className="relative w-full aspect-2/3 bg-[#0A0A0A] overflow-hidden rounded-t-xl">
               {resource.posterUrl ? (
                 <Image
                   src={resource.posterUrl}
@@ -37,7 +34,7 @@ const GridModeItem = ({
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
               ) : (
-                <div className="flex flex-col items-center justify-center gap-2 text-gray-600">
+                <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-600">
                   <BookOpen size={40} />
                   <span className="text-xs text-gray-500">بدون جلد</span>
                 </div>
@@ -50,7 +47,7 @@ const GridModeItem = ({
               </span>
             </div>
 
-            <div className="space-y-1">
+            <div className="p-3 space-y-1">
               <h3 className="text-[#F5F5F5] font-medium text-sm line-clamp-2 group-hover:text-blue-400 transition leading-tight">
                 {resource.name}
               </h3>

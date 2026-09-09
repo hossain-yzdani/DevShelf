@@ -8,6 +8,7 @@ import { CustomSelect } from "@/components/ui/customSelect/customSelect";
 import { MultiSelect } from "@/components/ui/customSelect/multySelect";
 import { Plus, X } from "lucide-react";
 import { ResourcesApi } from "@/utils/resources/resource.api";
+import { FileUpload } from "@/components/ui/upload/uploadFile";
 
 interface CreateResourceModalProps {
   isOpen: boolean;
@@ -231,7 +232,7 @@ export default function CreateResourceModal({
 
           {/* File URL + Poster URL */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">
                 لینک فایل <span className="text-red-400">*</span>
               </label>
@@ -245,9 +246,28 @@ export default function CreateResourceModal({
                 className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition"
                 required
               />
-            </div>
+            </div> */}
+            <FileUpload
+              type="file"
+              accept="application/pdf"
+              maxSize="20MB"
+              onUploadComplete={(url) =>
+                setFormData({ ...formData, fileUrl: url })
+              }
+              onUploadError={(error) => console.error(error)}
+            />
 
-            <div>
+            <FileUpload
+              type="poster"
+              accept="image"
+              maxSize="5MB"
+              onUploadComplete={(url) =>
+                setFormData({ ...formData, posterUrl: url })
+              }
+              onUploadError={(error) => console.error(error)}
+            />
+
+            {/* <div>
               <label className="block text-sm font-medium text-gray-400 mb-1.5">
                 لینک پوستر
               </label>
@@ -260,7 +280,7 @@ export default function CreateResourceModal({
                 placeholder="https://example.com/poster.jpg"
                 className="w-full bg-[#0A0A0A] border border-white/5 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:outline-none transition"
               />
-            </div>
+            </div> */}
           </div>
 
           {/* Category + Tags */}

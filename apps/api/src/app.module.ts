@@ -13,6 +13,10 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 import databaseConfig from './config/database.config';
+import { UploadsModule } from './modules/uoload/upload.module';
+
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -36,6 +40,10 @@ import databaseConfig from './config/database.config';
         // logging: process.env.NODE_ENV === 'development',
       }),
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
     UsersModule,
     ResourcesModule,
     CategoriesModule,
@@ -45,6 +53,7 @@ import databaseConfig from './config/database.config';
     SearchesModule,
     AuthModule,
     AnalyticsModule,
+    UploadsModule,
   ],
 })
 export class AppModule {}
