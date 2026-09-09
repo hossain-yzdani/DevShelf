@@ -5,7 +5,7 @@ import { Category } from "../../../../packages/types/category.type";
 export class CategoryService {
   static async getAll(): Promise<Category[]> {
     try {
-      const categories = await apiClient.get<Category[]>("/categories");
+      const categories = await apiClient.get<Category[]>("/categories/all");
       return categories;
     } catch (error) {
       logger.error({ error }, "Failed to fetch categories");

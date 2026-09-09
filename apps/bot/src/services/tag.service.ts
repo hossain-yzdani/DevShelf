@@ -7,7 +7,7 @@ import { Tag } from "../../../../packages/types/tag.type";
 export class TagService {
   static async getAll(): Promise<Tag[]> {
     try {
-      const tags = await apiClient.get<Tag[]>("/tags");
+      const tags = await apiClient.get<Tag[]>("/tags/all");
       return tags;
     } catch (error) {
       logger.error({ error }, "Failed to fetch tags");
