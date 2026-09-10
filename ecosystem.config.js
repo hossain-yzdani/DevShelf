@@ -4,7 +4,7 @@ module.exports = {
       name: "devshelf-dashboard", // اسم دلخواه برای اپ Next.js
       cwd: "./apps/dashboard", // مسیر پوشه اپ
       script: "npm", // استفاده از npm برای اجرا
-      args: "start -- --port 500", // دستور start با پورت مشخص
+      args: "start -- --port 5000", // دستور start با پورت مشخص
       env: {
         NODE_ENV: "production",
         PORT: 5000, // پورت رو هم اینجا تعیین کن
