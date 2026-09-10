@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "dashboard", // اسم دلخواه برای اپ Next.js
+      name: "devshelf-dashboard", // اسم دلخواه برای اپ Next.js
       cwd: "./apps/dashboard", // مسیر پوشه اپ
       script: "npm", // استفاده از npm برای اجرا
       args: "start -- --port 500", // دستور start با پورت مشخص
@@ -11,7 +11,7 @@ module.exports = {
       },
     },
     {
-      name: "api", // اسم دلخواه برای اپ NestJS
+      name: "devshlef-api", // اسم دلخواه برای اپ NestJS
       cwd: "./apps/api", // مسیر پوشه اپ
       script: "npm",
       args: "start -- --port 5001", // پورت API
