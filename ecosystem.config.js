@@ -1,0 +1,24 @@
+module.exports = {
+  apps: [
+    {
+      name: "dashboard", // اسم دلخواه برای اپ Next.js
+      cwd: "./apps/dashboard", // مسیر پوشه اپ
+      script: "npm", // استفاده از npm برای اجرا
+      args: "start -- --port 500", // دستور start با پورت مشخص
+      env: {
+        NODE_ENV: "production",
+        PORT: 5000, // پورت رو هم اینجا تعیین کن
+      },
+    },
+    {
+      name: "api", // اسم دلخواه برای اپ NestJS
+      cwd: "./apps/api", // مسیر پوشه اپ
+      script: "npm",
+      args: "start -- --port 5001", // پورت API
+      env: {
+        NODE_ENV: "production",
+        PORT: 5001,
+      },
+    },
+  ],
+};
