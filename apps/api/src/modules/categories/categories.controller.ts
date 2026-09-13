@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('categories')
 export class CategoriesController {
@@ -27,6 +28,7 @@ export class CategoriesController {
     return this.categoriesService.findOne(slug);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':slug')
   update(
     @Param('slug') slug: string,
@@ -35,6 +37,7 @@ export class CategoriesController {
     return this.categoriesService.update(slug, updateCategoryDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':slug')
   remove(@Param('slug') slug: string) {
     return this.categoriesService.remove(slug);

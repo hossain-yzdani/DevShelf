@@ -5,17 +5,17 @@ import {
   UploadedFile,
   BadRequestException,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadsService } from './upload.service';
 import * as multer from 'multer';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
-// تنظیمات ذخیره‌سازی Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // مسیر به صورت پویا تعیین میشه
     const uploadPath = './uploads/temp';
     if (!require('fs').existsSync(uploadPath)) {
       require('fs').mkdirSync(uploadPath, { recursive: true });
@@ -53,6 +53,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
   }
 };
 
+@UseGuards(AuthGuard)
 @Controller('uploads')
 export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
@@ -75,11 +76,9 @@ export class UploadsController {
       throw new BadRequestException('فایلی انتخاب نشده است');
     }
 
-    // انتقال فایل از temp به مقصد نهایی
     const ext = path.extname(file.originalname).slice(1);
     const destPath = this.uploadsService.getUploadPath('poster', ext);
 
-    // جابجایی فایل
     const fs = require('fs');
     fs.renameSync(file.path, destPath);
 

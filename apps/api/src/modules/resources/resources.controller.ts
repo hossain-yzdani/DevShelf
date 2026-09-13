@@ -7,16 +7,19 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
 import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('resources')
 export class ResourcesController {
   constructor(private readonly resourcesService: ResourcesService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createResourceDto: CreateResourceDto) {
     return this.resourcesService.create(createResourceDto);
@@ -60,11 +63,13 @@ export class ResourcesController {
     return this.resourcesService.findOne(slug);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/id/:id')
   findOneById(@Param('id') id: string) {
     return this.resourcesService.findOneById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':slug')
   update(
     @Param('slug') slug: string,
@@ -73,6 +78,7 @@ export class ResourcesController {
     return this.resourcesService.update(slug, updateResourceDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':slug')
   remove(@Param('slug') slug: string) {
     return this.resourcesService.remove(slug);

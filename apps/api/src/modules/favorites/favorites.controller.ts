@@ -11,16 +11,19 @@ import {
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { BotAuthGuard } from '../auth/guards/botAuth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('favorites')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
   async getAll() {
     return this.favoritesService.getAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get('stats')
   async getStats() {
     return this.favoritesService.getStats();
@@ -56,5 +59,4 @@ export class FavoritesController {
   ) {
     return this.favoritesService.toggleFavorite(telegramId, resourceSlug);
   }
-
 }

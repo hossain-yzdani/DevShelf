@@ -50,6 +50,6 @@ export class UploadsService {
 
   getUrl(filePath: string): string {
     const relativePath = filePath.replace(/\\/g, '/').replace('uploads/', '');
-    return `${process.env.URL || 'http://localhost:5001'}/uploads/${relativePath}`;
+    return `${process.env.URL}/uploads/${relativePath}`;
   }
 }

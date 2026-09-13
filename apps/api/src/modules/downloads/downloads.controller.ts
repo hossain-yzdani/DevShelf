@@ -2,16 +2,19 @@ import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards } from '@ne
 import { CreateDownloadDto } from './dto/create-download.dto';
 import { DownloadsService } from './downloads.service';
 import { BotAuthGuard } from '../auth/guards/botAuth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('downloads')
 export class DownloadsController {
   constructor(private downloadsService: DownloadsService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return await this.downloadsService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get('stats')
   async getStats() {
     return await this.downloadsService.getStats();
@@ -28,7 +31,7 @@ export class DownloadsController {
     return await this.downloadsService.download(createDownloadDto);
   }
 
-  // @UseGuards(BotAuthGuard)
+  @UseGuards(BotAuthGuard)
   @Get('users/:telegramID')
   async findBy(@Param('telegramID', new ParseIntPipe()) telegramID: number) {
     return await this.downloadsService.getMyDownloads(telegramID);
