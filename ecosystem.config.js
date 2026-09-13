@@ -1,20 +1,30 @@
 module.exports = {
   apps: [
     {
-      name: "devshelf-dashboard", // اسم دلخواه برای اپ Next.js
-      cwd: "./apps/dashboard", // مسیر پوشه اپ
-      script: "npm", // استفاده از npm برای اجرا
-      args: "start -- --port 5000", // دستور start با پورت مشخص
+      name: "devshelf-view",
+      cwd: "./apps/view",
+      script: "npm",
+      args: "start -- --port 5002",
       env: {
         NODE_ENV: "production",
-        PORT: 5000, // پورت رو هم اینجا تعیین کن
+        PORT: 5000,
       },
     },
     {
-      name: "devshlef-api", // اسم دلخواه برای اپ NestJS
-      cwd: "./apps/api", // مسیر پوشه اپ
+      name: "devshelf-dashboard",
+      cwd: "./apps/dashboard",
       script: "npm",
-      args: "start -- --port 5001", // پورت API
+      args: "start -- --port 5000",
+      env: {
+        NODE_ENV: "production",
+        PORT: 5000,
+      },
+    },
+    {
+      name: "devshlef-api",
+      cwd: "./apps/api",
+      script: "npm",
+      args: "start -- --port 5001",
       env: {
         NODE_ENV: "production",
         PORT: 5001,
@@ -31,6 +41,6 @@ module.exports = {
       env: {
         NODE_ENV: "production",
       },
-    }
+    },
   ],
 };
