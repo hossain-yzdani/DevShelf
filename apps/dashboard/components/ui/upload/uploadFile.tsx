@@ -48,6 +48,7 @@ export function FileUpload({
         {
           method: "POST",
           body: formData,
+          credentials: "include"
         },
       );
 
