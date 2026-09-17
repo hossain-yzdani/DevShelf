@@ -20,7 +20,7 @@ async function bootstrap() {
   
 
   app.enableCors({
-    origin: 'http://localhost:5000',
+    origin: 'https://dashboard.devshelf.ir',
     credentials: true,
   });
 

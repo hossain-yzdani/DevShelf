@@ -32,7 +32,7 @@ export class AuthController {
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/',
-      domain: 'localhost',
+      domain: '.devshelf.ir',
     });
 
     return {
