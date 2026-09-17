@@ -38,16 +38,6 @@ export default function LoginPage() {
         throw new Error(data.message || "نام کاربری یا رمز عبور اشتباه است");
       }
 
-      localStorage.setItem(
-        "access_token",
-        data.accessToken || data.access_token,
-      );
-      localStorage.setItem("user", JSON.stringify(data.user || data.user));
-
-      document.cookie = `access_token=${
-        data.accessToken || data.access_token
-      }; path=/; max-age=${60 * 60 * 24 * 7}`; // 7 روز
-
       router.push("/");
     } catch (error: any) {
       setError(error.message || "خطا در ارتباط با سرور");
