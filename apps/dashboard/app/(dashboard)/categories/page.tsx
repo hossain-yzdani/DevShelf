@@ -35,7 +35,7 @@ export default function CategoriesPage() {
   async function fetchData() {
     try {
       setLoading(true);
-      const categories = await CategoriesApi.get(currentPage, 8);
+      const categories = await CategoriesApi.get(currentPage, 6);
       setTotalPages(categories.meta.totalPages);
       setCategories(categories.data);
     } catch (error) {

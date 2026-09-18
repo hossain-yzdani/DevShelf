@@ -40,7 +40,7 @@ const TagsGrid = ({ paginatedTags, handleDelete, handleEdit, loading }: TProps) 
                   </div>
                 </div>
                 <span className="text-xs text-gray-500 bg-[#0A0A0A] px-2 py-1 rounded-full shrink-0">
-                  {tag.name} منبع
+                  {tag.resources.length} منبع
                 </span>
               </div>
 

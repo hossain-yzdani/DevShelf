@@ -34,7 +34,7 @@ export default function TagsPage() {
   async function fetchData() {
     try {
       setLoading(true);
-      const tags = await TagsApi.get(currentPage, 8);
+      const tags = await TagsApi.get(currentPage, 12);
       setTotalPages(tags.meta.totalPages);
       setTags(tags.data);
     } catch (error) {
