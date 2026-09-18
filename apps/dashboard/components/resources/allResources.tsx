@@ -8,7 +8,7 @@ import ListModeItem from "./listModeItem";
 import GridModeSkeleton from "./skeletons/resources";
 
 interface TProps {
-  resources: Resource[];
+  paginatedResources: Resource[];
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   viewMode: string;
@@ -28,7 +28,7 @@ const Resources = (props: TProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const filteredResources = props.resources.filter((r) => {
+  const filteredResources = props.paginatedResources.filter((r) => {
     const matchesSearch =
       r.name.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
       r.description.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
@@ -38,16 +38,11 @@ const Resources = (props: TProps) => {
     return matchesSearch && matchesType;
   });
 
-  const paginatedResources = filteredResources.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-
   if (props.loading === true) {
     return <GridModeSkeleton />;
   }
 
-  if (paginatedResources.length === 0) {
+  if (props.paginatedResources.length === 0) {
     return (
       <div className="text-center py-12 bg-[#171717] rounded-xl border border-white/5">
         <BookOpen size={48} className="text-gray-600 mx-auto" />
@@ -60,13 +55,13 @@ const Resources = (props: TProps) => {
     <>
       {props.viewMode === "grid" ? (
         <GridModeItem
-          paginatedResources={paginatedResources}
+          paginatedResources={props.paginatedResources}
           handleDelete={props.handleDelete}
           handleEdit={props.handleEdit}
         />
       ) : (
         <ListModeItem
-          paginatedResources={paginatedResources}
+          paginatedResources={props.paginatedResources}
           handleDelete={props.handleDelete}
           handleEdit={props.handleEdit}
         />

@@ -32,7 +32,7 @@ export default function ResourcesPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const resources = await ResourcesApi.get(currentPage, 24);
+      const resources = await ResourcesApi.get(currentPage, 10);
       setTotalPages(resources.meta.totalPages);
       setResources(resources.data);
     } catch (error) {
@@ -92,7 +92,7 @@ export default function ResourcesPage() {
       />
 
       <Resources
-        resources={resources}
+        paginatedResources={resources}
         loading={loading}
         setLoading={setLoading}
         viewMode={viewMode}
