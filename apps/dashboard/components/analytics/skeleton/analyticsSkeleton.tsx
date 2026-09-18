@@ -3,17 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton/skeleton";
 const AnalyticsPageSkeleton = () => {
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <Skeleton className="h-9 w-48 bg-neutral-800" />
-          <Skeleton className="h-4 w-64 bg-neutral-800 mt-1" />
-        </div>
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-10 w-40 rounded-xl bg-neutral-800" />
-          <Skeleton className="h-10 w-28 rounded-xl bg-neutral-800" />
-        </div>
-      </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

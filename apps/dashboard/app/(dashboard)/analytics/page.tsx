@@ -118,7 +118,31 @@ export default function AnalyticsPage() {
   };
 
   if (isLoading || !data) {
-    return <AnalyticsPageSkeleton />;
+    return (
+      <>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex-4">
+            <h1 className="text-3xl font-bold text-[#F5F5F5]">آمار و تحلیل</h1>
+            <p className="text-gray-400 text-sm mt-1">
+              مشاهده عملکرد و آمار کتابخانه
+            </p>
+          </div>
+          <div className="flex flex-1 items-center gap-3">
+            <CustomSelect
+              options={TIME_RANGE_OPTIONS}
+              value={timeRange}
+              onChange={setTimeRange}
+              className="min-w-40 flex"
+            />
+            <button className="bg-[#171717] h-fit border border-white/5 rounded-xl px-4 py-2 text-gray-400 hover:text-[#F5F5F5] transition text-sm flex items-center gap-2">
+              <Filter size={16} />
+              فیلتر
+            </button>
+          </div>
+        </div>
+        <AnalyticsPageSkeleton />
+      </>
+    );
   }
 
   return (
