@@ -1,8 +1,20 @@
 import { apiClient } from "./api.client";
 import { logger } from "../utils/logger";
 import { Resource } from "../../../../packages/types/resource.type";
+import { PaginatedResponse } from "../../../../packages/types/pagination.type";
 
 export class ResourceService {
+  static async fetchResources(
+  page: number = 1,
+  limit: number = 5,
+  search?: string
+): Promise<PaginatedResponse<Resource>> {
+  const response: PaginatedResponse<Resource> = await apiClient.get(`/resources`, {
+    params: { page, limit, search },
+  });
+  return response;
+}
+
   static async getBySlug(slug: string): Promise<Resource> {
     try {
       const resource = await apiClient.get<Resource>(`/resources/${slug}`);

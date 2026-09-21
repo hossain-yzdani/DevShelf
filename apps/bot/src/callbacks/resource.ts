@@ -1,13 +1,29 @@
 import { Bot, InlineKeyboard, InputFile } from "grammy";
 import { logger } from "../utils/logger";
 import { ResourceService } from "../services/resource.service";
-import { Resource , ResourceType } from "../../../../packages/types/resource.type";
+import {
+  Resource,
+  ResourceType,
+} from "../../../../packages/types/resource.type";
 import { Readable } from "node:stream";
 import { FileService } from "../services/file.service";
 import { buildResourceKeyboard } from "../keyboards/resource.keyboard";
 import { FavoriteService } from "../services/favorite.service";
 
+const ITEMS_PER_PAGE = 5;
+
 export function registerResourceCallbacks(bot: Bot) {
+  bot.callbackQuery("resources", async (ctx) => {
+    await ctx.answerCallbackQuery();
+    await showResourcesPage(ctx, 1);
+  });
+
+  bot.callbackQuery(/^resources_page_(\d+)$/, async (ctx) => {
+    const page = parseInt(ctx.match[1], 10);
+    await ctx.answerCallbackQuery();
+    await showResourcesPage(ctx, page);
+  });
+
   bot.callbackQuery(/^view_(.+)$/, async (ctx) => {
     const slug = ctx.match[1];
     const telegramId = ctx.from?.id;
@@ -198,4 +214,122 @@ function formatResourceMessage(resource: Resource): string {
     `<b>📌 Type:</b> ${label}\n` +
     `<b>📅 Added:</b> ${new Date(resource.createdAt).toLocaleDateString()}`
   );
+}
+
+async function showResourcesPage(ctx: any, page: number = 1) {
+  try {
+    const {
+      data: resources,
+      totalPages,
+      total,
+    } = await ResourceService.fetchResources(page, ITEMS_PER_PAGE);
+
+    if (!resources || resources.length === 0) {
+      const emptyKeyboard = new InlineKeyboard().text(
+        "🔙 بازگشت به منوی اصلی",
+        "back_main",
+      );
+
+      if (ctx.callbackQuery) {
+        await ctx.editMessageText("📭 هیچ منبعی یافت نشد.", {
+          reply_markup: emptyKeyboard,
+        });
+      } else {
+        await ctx.reply("📭 هیچ منبعی یافت نشد.", {
+          reply_markup: emptyKeyboard,
+        });
+      }
+      return;
+    }
+
+    const message = formatResourceList(resources, page, total);
+    const keyboard = buildResourceListKeyboard(resources, page, totalPages);
+
+    if (ctx.callbackQuery) {
+      await ctx.editMessageText(message, {
+        parse_mode: "HTML",
+        reply_markup: keyboard,
+      });
+    } else {
+      await ctx.reply(message, {
+        parse_mode: "HTML",
+        reply_markup: keyboard,
+      });
+    }
+  } catch (error) {
+    logger.error({ page, error }, "Failed to show resources list");
+    await ctx.reply("❌ خطا در دریافت منابع. لطفاً دوباره تلاش کنید.");
+  }
+}
+
+function formatResourceList(
+  resources: Resource[],
+  page: number,
+  total: number,
+): string {
+  let message = `📚 <b>لیست منابع</b>\n`;
+  message += `📊 مجموع: ${total} منبع\n`;
+  message += `📄 صفحه ${page}\n`;
+  message += `━━━━━━━━━━━━━━━━━━\n\n`;
+
+  resources.forEach((resource, index) => {
+    const number = (page - 1) * ITEMS_PER_PAGE + index + 1;
+    const emoji = getTypeEmoji(resource.type);
+
+    message += `<b>${number}. ${emoji} ${resource.name}</b>\n`;
+    message += `   ✍️ ${resource.author}\n`;
+    message += `   📥 ${resource.downloadsCount} | ❤️ ${resource.favoritesCount}\n\n`;
+  });
+
+  return message;
+}
+
+function buildResourceListKeyboard(
+  resources: Resource[],
+  currentPage: number,
+  totalPages: number,
+): InlineKeyboard {
+  const keyboard = new InlineKeyboard();
+
+  resources.forEach((resource, index) => {
+    const number = (currentPage - 1) * ITEMS_PER_PAGE + index + 1;
+    const emoji = getTypeEmoji(resource.type);
+
+    keyboard
+      .text(`${number}. ${emoji} ${resource.name}`, `view_${resource.slug}`)
+      .row();
+  });
+
+  // دکمه قبلی
+  if (currentPage > 1) {
+    keyboard.text("‹ قبلی", `resources_page_${currentPage - 1}`);
+  } else {
+    keyboard.text(" ", "noop");
+  }
+
+  // شماره صفحه
+  keyboard.text(`${currentPage} / ${totalPages}`, "noop");
+
+  // دکمه بعدی
+  if (currentPage < totalPages) {
+    keyboard.text("بعدی ›", `resources_page_${currentPage + 1}`);
+  } else {
+    keyboard.text(" ", "noop");
+  }
+
+  keyboard.row();
+  keyboard.text("🔙 بازگشت به منوی اصلی", "back_main");
+
+  return keyboard;
+}
+
+function getTypeEmoji(type: string): string {
+  const emojis: Record<string, string> = {
+    book: "📚",
+    video: "🎬",
+    article: "📄",
+    audio: "🎧",
+    course: "🎓",
+  };
+  return emojis[type] || "📄";
 }

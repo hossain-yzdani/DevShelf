@@ -2,6 +2,9 @@ import { InlineKeyboard } from "grammy";
 import { STAR_ICON_ID } from "../utils/icons";
 
 export const mainKeyboard = new InlineKeyboard()
+  .text("resources", "resources")
+  .success()
+  .row()
   .text("📚 Find resources", "search")
   .primary()
   .text("📂 Categories", "categories")
