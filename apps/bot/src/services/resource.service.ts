@@ -9,16 +9,14 @@ export class ResourceService {
   limit: number = 5,
   search?: string
 ): Promise<PaginatedResponse<Resource>> {
-  const response: PaginatedResponse<Resource> = await apiClient.get(`/resources`, {
-    params: { limit, page },
-  });
+    const response: PaginatedResponse<Resource> = await apiClient.get(`/resources?limit=${limit}&page=${page}`);
+    console.log(response);
   return response;
 }
 
   static async getBySlug(slug: string): Promise<Resource> {
     try {
       const resource = await apiClient.get<Resource>(`/resources/${slug}`);
-
       return resource;
     } catch (error) {
       logger.error({ slug, error }, "Failed to fetch resource");

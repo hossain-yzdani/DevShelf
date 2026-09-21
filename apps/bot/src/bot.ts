@@ -27,7 +27,21 @@ process.on("SIGINT", () => {
 export default webhookCallback(bot, "http");
 
 
-// bootstrap().catch((error) => {
-//   logger.error("❌ Failed to start bot:", error);
-//   process.exit(1);
-// });
+// async function bootstrap() {
+//   try {
+//     await bot.init();
+//     logger.info(`🤖 Bot @${bot.botInfo.username} started`);
+
+//     // ✅ polling به جای webhook
+//     bot.start({
+//       onStart: (botInfo) => {
+//         logger.info(`✅ Bot @${botInfo.username} is running (polling mode)`);
+//       },
+//     });
+//   } catch (error) {
+//     logger.error({ error }, "❌ Failed to start bot");
+//     process.exit(1);
+//   }
+// }
+
+// bootstrap();
