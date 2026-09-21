@@ -10,7 +10,7 @@ export class ResourceService {
   search?: string
 ): Promise<PaginatedResponse<Resource>> {
   const response: PaginatedResponse<Resource> = await apiClient.get(`/resources`, {
-    params: { page, limit, search },
+    params: { limit, page },
   });
   return response;
 }
