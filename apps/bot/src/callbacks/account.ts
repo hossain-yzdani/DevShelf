@@ -20,6 +20,8 @@ export function registerAccountCallbacks(bot: Bot) {
 
       const user = await UserService.getUserByTgId(userData);
 
+      console.log(user);
+
       const message = formatAccountMessage(user);
       const keyboard = buildAccountKeyboard(true);
 
