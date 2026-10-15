@@ -33,6 +33,12 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('tg/:id')
+  findOneByTgId(@Param('id') id: number) {
+    return this.usersService.findOneByTelegramId(id);
+  }
+
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
