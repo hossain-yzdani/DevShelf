@@ -227,7 +227,7 @@ async function showResourcesPage(ctx: any, page: number = 1) {
     if (!resources || resources.length === 0) {
       const emptyKeyboard = new InlineKeyboard().text(
         "🔙 بازگشت به منوی اصلی",
-        "back_main",
+        "back", 
       );
 
       if (ctx.callbackQuery) {
@@ -267,9 +267,9 @@ function formatResourceList(
   page: number,
   total: number,
 ): string {
-  let message = `📚 <b>لیست منابع</b>\n`;
-  message += `📊 مجموع: ${total} منبع\n`;
-  message += `📄 صفحه ${page}\n`;
+  let message = `📚 <b>Resources</b>\n`;
+  message += `📊 tolal: ${total} resource\n`;
+  message += `📄 page ${page}\n`;
   message += `━━━━━━━━━━━━━━━━━━\n\n`;
 
   resources.forEach((resource, index) => {
