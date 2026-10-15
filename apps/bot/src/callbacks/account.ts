@@ -19,7 +19,7 @@ export function registerAccountCallbacks(bot: Bot) {
       await ctx.editMessageText(message, {
         parse_mode: "HTML",
         reply_markup: keyboard,
-      });
+      }); 
     } catch (error) {
       logger.error({ telegramId , error }, "Failed to show account");
       await ctx.answerCallbackQuery("❌ Failed to load account!");
@@ -67,7 +67,7 @@ function buildAccountKeyboard(notificationsEnabled: boolean): InlineKeyboard {
     )
     .primary()
     .row()
-    .text("🔙 Back", "back");
+    .text("↩️ Back", "back");
 }
 
 function formatAccountMessage(user: any): string {
