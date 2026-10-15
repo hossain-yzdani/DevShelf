@@ -4,7 +4,7 @@ export const mainKeyboard = new InlineKeyboard()
   .text("📚 Resources", "resources")
   .success()
   .text("🔍 Search", "search")
-  .primary()
+  .success()
   .row()
 
   .text("📂 Categories", "categories")
@@ -14,12 +14,11 @@ export const mainKeyboard = new InlineKeyboard()
   .row()
 
   .text("⭐ Populars", "popular")
-  .success()
+  .danger()
   .text("❤️ Favorites", "myFavorites")
   .danger()
   .row()
 
-  .text("📥 My Downloads", "myDownloads")
-  .danger();
+  .text("📥 My Downloads", "myDownloads");
 
 export const backKeyboard = new InlineKeyboard().text("🔙 Back", "back");
