@@ -15,13 +15,13 @@ export const mainKeyboard = new InlineKeyboard()
 
   .text("⭐ Populars", "popular")
   .danger()
-  .text("❤️ Favorites", "myFavorites")
-  .danger()
+  // .text("❤️ Favorites", "myFavorites")
+  // .danger()
   .row()
 
-  .text("📥 My Downloads", "myDownloads")
-  .danger()
+  // .text("📥 My Downloads", "myDownloads")
+  // .danger()
   .text("👤 My Account", "myAccount")
-  .danger();
+  .row();
 
 export const backKeyboard = new InlineKeyboard().text("🔙 Back", "back");

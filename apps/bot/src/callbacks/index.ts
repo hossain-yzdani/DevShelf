@@ -22,7 +22,6 @@ export function registerCallbacks(bot: Bot) {
   registerAccountCallbacks(bot);
   
   const message =
-    "🔙 <b>Back to Main Menu</b>\n\n" +
     "📚 <b>Welcome to DevShelf</b>\n\n" +
     "Discover useful books, courses, articles and other resources.\n" +
     "Save your favorites and keep track of your downloads.\n\n" +

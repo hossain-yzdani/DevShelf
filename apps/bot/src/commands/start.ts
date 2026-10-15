@@ -22,8 +22,6 @@ bot.command("start", async (ctx) => {
     logger.error(error);
   }
 
-  console.log("📨 sending welcome message");
-
   await ctx.reply(
     `<tg-emoji emoji-id="${STAR_ICON_ID}">⭐</tg-emoji> Welcome to <b>DevShelf</b>! \n\n` +
       `📚 Here you can find books about computer, programming and artifishal inteligence.\n\n` +
