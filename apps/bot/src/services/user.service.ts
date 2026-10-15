@@ -1,11 +1,10 @@
-import { Auth } from "../../../../packages/types/auth";
 import { logger } from "../utils/logger";
 import { apiClient } from "./api.client";
 
 export class UserService {
-  static async getUserByTgId(body: Auth) {
+  static async getUserByTgId(telegramId: number) {
     try {
-      const user = await apiClient.post<Auth>("/auth/register", body);
+      const user = await apiClient.get(`/users/tg/${telegramId}`);
       return user;
     } catch (error) {
       logger.error({ error }, "Failed to fetch category resources");

@@ -1,24 +1,15 @@
 import { Bot, InlineKeyboard } from "grammy";
 import { logger } from "../utils/logger";
-import { Auth } from "../../../../packages/types/auth";
 import { UserService } from "../services/user.service";
 
 export function registerAccountCallbacks(bot: Bot) {
   bot.callbackQuery("myAccount", async (ctx) => {
     const telegramId = ctx.from.id;
 
-      const userData: Auth = {
-        telegramId: ctx.from?.id,
-        username: ctx.from?.username || undefined,
-        firstName: ctx.from?.first_name || undefined,
-        lastName: ctx.from?.last_name || undefined,
-        languageCode: ctx.from?.language_code || undefined,
-      };
-
     try {
       await ctx.answerCallbackQuery();
 
-      const user = await UserService.getUserByTgId(userData);
+      const user = await UserService.getUserByTgId(telegramId);
 
       console.log(user);
 
