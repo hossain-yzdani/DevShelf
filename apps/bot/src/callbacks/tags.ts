@@ -105,7 +105,7 @@ export async function showTagsPage(ctx: any, page: number = 1) {
     const { totalPages } = tags.meta;
 
     if (page > 1) {
-      keyboard.text("⬅️ Prev", `resources_page_${page - 1}`);
+      keyboard.text("⬅️ Prev", `tags_page_${page - 1}`);
     } else {
       keyboard.text(" ", "noop");
     }
@@ -113,7 +113,7 @@ export async function showTagsPage(ctx: any, page: number = 1) {
     keyboard.text(`📄 ${page} / ${totalPages}`, "noop");
 
     if (page < totalPages) {
-      keyboard.text("Next ➡️", `resources_page_${page + 1}`);
+      keyboard.text("Next ➡️", `tags_page_${page + 1}`);
     } else {
       keyboard.text(" ", "noop");
     }
