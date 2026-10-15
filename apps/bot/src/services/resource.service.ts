@@ -5,14 +5,15 @@ import { PaginatedResponse } from "../../../../packages/types/pagination.type";
 
 export class ResourceService {
   static async fetchResources(
-  page: number = 1,
-  limit: number = 5,
-  search?: string
-): Promise<PaginatedResponse<Resource>> {
-    const response: PaginatedResponse<Resource> = await apiClient.get(`/resources?limit=${limit}&page=${page}`);
-    console.log(response);
-  return response;
-}
+    page: number = 1,
+    limit: number = 5,
+    search?: string,
+  ): Promise<PaginatedResponse<Resource>> {
+    const response: PaginatedResponse<Resource> = await apiClient.get(
+      `/resources?limit=${limit}&page=${page}`,
+    );
+    return response;
+  }
 
   static async getBySlug(slug: string): Promise<Resource> {
     try {

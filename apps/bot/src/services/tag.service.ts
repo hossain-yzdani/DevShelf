@@ -2,9 +2,21 @@ import { apiClient } from "./api.client";
 import { logger } from "../utils/logger";
 import { Resource } from "../../../../packages/types/resource.type";
 import { Tag } from "../../../../packages/types/tag.type";
+import { PaginatedResponse } from "../../../../packages/types/pagination.type";
 
 
 export class TagService {
+    static async fetchTags(
+      page: number = 1,
+      limit: number = 5,
+      search?: string,
+    ): Promise<PaginatedResponse<Tag>> {
+      const response: PaginatedResponse<Tag> = await apiClient.get(
+        `/tags?limit=${limit}&page=${page}`,
+      );
+      return response;
+  }
+  
   static async getAll(): Promise<Tag[]> {
     try {
       const tags = await apiClient.get<Tag[]>("/tags/all");

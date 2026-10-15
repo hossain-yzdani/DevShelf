@@ -329,7 +329,7 @@ function buildResourceListKeyboard(
   }
 
   keyboard.row();
-  keyboard.text("🔙 Back to Main Menu", "back");
+  keyboard.text("↩️ Back", "back");
 
   return keyboard;
 }
