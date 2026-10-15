@@ -1,9 +1,6 @@
 export interface PaginatedResponse<T> {
   data: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
+  meta: PaginatedResponseN
 }
 
 export interface PaginatedResponseN {
@@ -12,4 +9,3 @@ export interface PaginatedResponseN {
   limit: number;
   totalPages: number;
 }
-

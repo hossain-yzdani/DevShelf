@@ -220,30 +220,28 @@ async function showResourcesPage(ctx: any, page: number = 1) {
   try {
     const {
       data: resources,
-      totalPages,
-      total,
+      meta,
     } = await ResourceService.fetchResources(page, ITEMS_PER_PAGE);
 
     if (!resources || resources.length === 0) {
-      const emptyKeyboard = new InlineKeyboard().text(
-        "🔙 بازگشت به منوی اصلی",
-        "back", 
-      );
+      const emptyKeyboard = new InlineKeyboard();
+
+      emptyKeyboard.text("↩️ Back", "back");
 
       if (ctx.callbackQuery) {
-        await ctx.editMessageText("📭 هیچ منبعی یافت نشد.", {
+        await ctx.editMessageText("📭 No resource was found", {
           reply_markup: emptyKeyboard,
         });
       } else {
-        await ctx.reply("📭 هیچ منبعی یافت نشد.", {
+        await ctx.reply("📭 No resource was found", {
           reply_markup: emptyKeyboard,
         });
       }
       return;
     }
 
-    const message = formatResourceList(resources, page, total);
-    const keyboard = buildResourceListKeyboard(resources, page, totalPages);
+    const message = formatResourceList(resources, page, meta.total);
+    const keyboard = buildResourceListKeyboard(resources, page, meta.totalPages);
 
     if (ctx.callbackQuery) {
       await ctx.editMessageText(message, {
@@ -270,16 +268,6 @@ function formatResourceList(
   let message = `📚 <b>Resources</b>\n`;
   message += `📊 tolal: ${total} resource\n`;
   message += `📄 page ${page}\n`;
-  message += `━━━━━━━━━━━━━━━━━━\n\n`;
-
-  resources.forEach((resource, index) => {
-    const number = (page - 1) * ITEMS_PER_PAGE + index + 1;
-    const emoji = getTypeEmoji(resource.type);
-
-    message += `<b>${number}. ${emoji} ${resource.name}</b>\n`;
-    message += `   ✍️ ${resource.author}\n`;
-    message += `   📥 ${resource.downloadsCount} | ❤️ ${resource.favoritesCount}\n\n`;
-  });
 
   return message;
 }
