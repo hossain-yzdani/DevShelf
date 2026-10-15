@@ -32,7 +32,6 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @UseGuards(AuthGuard)
   @Get('tg/:id')
   findOneByTgId(@Param('id') id: number) {
     return this.usersService.findOneByTelegramId(id);
