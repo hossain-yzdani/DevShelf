@@ -117,7 +117,7 @@ export function registerResourceCallbacks(bot: Bot) {
       try {
         const resource = await ResourceService.getBySlug(slug);
         await ctx.reply(
-          `⚠️ Could not send file directly.\n\n` +
+          `⚠️ <b>Could not send file directly</b>\n\n` +
             `📄 <b>${resource.name}</b>\n` +
             `✍️ ${resource.author}\n\n` +
             `🔗 <a href="${resource.fileUrl}">Click here to download</a>`,
@@ -204,44 +204,56 @@ function formatResourceMessage(resource: Resource): string {
 
   return (
     `<b>${emoji} ${resource.name}</b>\n\n` +
-    `<b>📝 Description:</b>\n${resource.description}\n\n` +
-    `<b>✍️ Author:</b> ${resource.author}\n` +
-    `<b>📂 Category:</b> ${resource.category?.name || "Unknown"}\n` +
-    `<b>🏷️ Tags:</b> ${resource.tags?.map((t) => `#${t.name}`).join(" ") || "None"}\n\n` +
-    `<b>📊 Statistics:</b>\n` +
+    `📝 <b>Description:</b>\n${resource.description}\n\n` +
+    `✍️ <b>Author:</b> ${resource.author}\n` +
+    `📂 <b>Category:</b> ${resource.category?.name || "Unknown"}\n` +
+    `🏷️ <b>Tags:</b> ${resource.tags?.map((t) => `#${t.name}`).join(" ") || "None"}\n\n` +
+    `📊 <b>Statistics:</b>\n` +
     `❤️ ${resource.favoritesCount} favorites\n` +
     `📥 ${resource.downloadsCount} downloads\n\n` +
-    `<b>📌 Type:</b> ${label}\n` +
-    `<b>📅 Added:</b> ${new Date(resource.createdAt).toLocaleDateString()}`
+    `📌 <b>Type:</b> ${label}\n` +
+    `📅 <b>Added:</b> ${new Date(resource.createdAt).toLocaleDateString("en-US")}`
   );
 }
 
 async function showResourcesPage(ctx: any, page: number = 1) {
   try {
-    const {
-      data: resources,
-      meta,
-    } = await ResourceService.fetchResources(page, ITEMS_PER_PAGE);
+    const { data: resources, meta } = await ResourceService.fetchResources(
+      page,
+      ITEMS_PER_PAGE,
+    );
 
     if (!resources || resources.length === 0) {
       const emptyKeyboard = new InlineKeyboard();
 
-      emptyKeyboard.text("↩️ Back", "back");
+      emptyKeyboard.text("🔙 Back to Main Menu", "back_main");
 
       if (ctx.callbackQuery) {
-        await ctx.editMessageText("📭 No resource was found", {
-          reply_markup: emptyKeyboard,
-        });
+        await ctx.editMessageText(
+          "📭 <b>No resources found</b>\n\nThere are no resources to display at the moment.",
+          {
+            reply_markup: emptyKeyboard,
+            parse_mode: "HTML",
+          },
+        );
       } else {
-        await ctx.reply("📭 No resource was found", {
-          reply_markup: emptyKeyboard,
-        });
+        await ctx.reply(
+          "📭 <b>No resources found</b>\n\nThere are no resources to display at the moment.",
+          {
+            reply_markup: emptyKeyboard,
+            parse_mode: "HTML",
+          },
+        );
       }
       return;
     }
 
     const message = formatResourceList(resources, page, meta.total);
-    const keyboard = buildResourceListKeyboard(resources, page, meta.totalPages);
+    const keyboard = buildResourceListKeyboard(
+      resources,
+      page,
+      meta.totalPages,
+    );
 
     if (ctx.callbackQuery) {
       await ctx.editMessageText(message, {
@@ -256,7 +268,7 @@ async function showResourcesPage(ctx: any, page: number = 1) {
     }
   } catch (error) {
     logger.error({ page, error }, "Failed to show resources list");
-    await ctx.reply("❌ خطا در دریافت منابع. لطفاً دوباره تلاش کنید.");
+    await ctx.reply("❌ Failed to load resources. Please try again.");
   }
 }
 
@@ -265,9 +277,18 @@ function formatResourceList(
   page: number,
   total: number,
 ): string {
-  let message = `📚 <b>Resources</b>\n`;
-  message += `📊 tolal: ${total} resource\n`;
-  message += `📄 page ${page}\n`;
+  let message = `📚 <b>Resources Library</b>\n`;
+  message += `📊 <b>Total:</b> ${total} resources\n`;
+  message += `📄 <b>Page:</b> ${page}\n\n`;
+
+  resources.forEach((resource, index) => {
+    const number = (page - 1) * ITEMS_PER_PAGE + index + 1;
+    const emoji = getTypeEmoji(resource.type);
+
+    message += `<b>${number}.</b> ${emoji} <b>${resource.name}</b>\n`;
+    message += `     ✍️ ${resource.author}\n`;
+    message += `     📥 ${resource.downloadsCount} | ❤️ ${resource.favoritesCount}\n\n`;
+  });
 
   return message;
 }
@@ -282,31 +303,33 @@ function buildResourceListKeyboard(
   resources.forEach((resource, index) => {
     const number = (currentPage - 1) * ITEMS_PER_PAGE + index + 1;
     const emoji = getTypeEmoji(resource.type);
+    const maxLength = 28;
+    const displayName =
+      resource.name.length > maxLength
+        ? resource.name.substring(0, maxLength) + "…"
+        : resource.name;
 
     keyboard
-      .text(`${number}. ${emoji} ${resource.name}`, `view_${resource.slug}`)
+      .text(`${number}. ${emoji} ${displayName}`, `view_${resource.slug}`)
       .row();
   });
 
-  // دکمه قبلی
   if (currentPage > 1) {
-    keyboard.text("‹ قبلی", `resources_page_${currentPage - 1}`);
+    keyboard.text("⬅️ Prev", `resources_page_${currentPage - 1}`);
   } else {
     keyboard.text(" ", "noop");
   }
 
-  // شماره صفحه
-  keyboard.text(`${currentPage} / ${totalPages}`, "noop");
+  keyboard.text(`📄 ${currentPage} / ${totalPages}`, "noop");
 
-  // دکمه بعدی
   if (currentPage < totalPages) {
-    keyboard.text("بعدی ›", `resources_page_${currentPage + 1}`);
+    keyboard.text("Next ➡️", `resources_page_${currentPage + 1}`);
   } else {
     keyboard.text(" ", "noop");
   }
 
   keyboard.row();
-  keyboard.text("🔙 بازگشت به منوی اصلی", "back_main");
+  keyboard.text("🔙 Back to Main Menu", "back");
 
   return keyboard;
 }
