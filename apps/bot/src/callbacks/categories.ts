@@ -170,7 +170,24 @@ export async function showCategoriesPage(ctx: any, page: number = 1) {
       }
     }
 
-    keyboard.text("↩️ Back", "back");
+    const { totalPages } = categories.meta;
+
+      if (page > 1) {
+        keyboard.text("⬅️ Prev", `resources_page_${page - 1}`);
+      } else {
+        keyboard.text(" ", "noop");
+      }
+
+      keyboard.text(`📄 ${page} / ${totalPages}`, "noop");
+
+      if (page < totalPages) {
+        keyboard.text("Next ➡️", `resources_page_${page + 1}`);
+      } else {
+        keyboard.text(" ", "noop");
+      }
+
+      keyboard.row();
+      keyboard.text("↩️ Back", "back");
 
     await ctx.editMessageText(
       `📂 **Categories**\n\n` +

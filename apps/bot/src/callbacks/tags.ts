@@ -41,7 +41,8 @@ export function registerTagCallbacks(bot: Bot) {
           .row();
       }
 
-      keyboard.text("↩️ Back to Tags", "tags").row();
+      keyboard.row();
+      keyboard.text("↩️ Back", "back");
 
       await ctx.editMessageText(
         `🏷️ **Tag Resources**\n\n` +
@@ -101,6 +102,23 @@ export async function showTagsPage(ctx: any, page: number = 1) {
       }
     }
 
+    const { totalPages } = tags.meta;
+
+    if (page > 1) {
+      keyboard.text("⬅️ Prev", `resources_page_${page - 1}`);
+    } else {
+      keyboard.text(" ", "noop");
+    }
+
+    keyboard.text(`📄 ${page} / ${totalPages}`, "noop");
+
+    if (page < totalPages) {
+      keyboard.text("Next ➡️", `resources_page_${page + 1}`);
+    } else {
+      keyboard.text(" ", "noop");
+    }
+
+    keyboard.row();
     keyboard.text("↩️ Back", "back");
 
     await ctx.editMessageText(
