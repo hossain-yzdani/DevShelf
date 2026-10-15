@@ -8,6 +8,7 @@ import { registerFavoriteCallbacks } from "./favorites";
 import { registerDownloadCallbacks } from "./download";
 import { registerPopularCallbacks } from "./popular";
 import { registerSearchCallbacks } from "./search";
+import { registerAccountCallbacks } from "./account";
 
 export function registerCallbacks(bot: Bot) {
 
@@ -18,6 +19,7 @@ export function registerCallbacks(bot: Bot) {
   registerDownloadCallbacks(bot);
   registerPopularCallbacks(bot);
   registerSearchCallbacks(bot);
+  registerAccountCallbacks(bot);
   
   const message =
     "🔙 <b>Back to Main Menu</b>\n\n" +

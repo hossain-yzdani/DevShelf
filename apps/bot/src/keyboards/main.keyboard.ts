@@ -19,6 +19,9 @@ export const mainKeyboard = new InlineKeyboard()
   .danger()
   .row()
 
-  .text("📥 My Downloads", "myDownloads");
+  .text("📥 My Downloads", "myDownloads")
+  .danger()
+  .text("👤 My Account", "myAccount")
+  .danger();
 
 export const backKeyboard = new InlineKeyboard().text("🔙 Back", "back");
