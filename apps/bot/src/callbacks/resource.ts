@@ -277,10 +277,15 @@ function formatResourceList(
   page: number,
   total: number,
 ): string {
-  let message = `📚 <b>Resources Library</b>\n`;
-  message += `📊 <b>Total:</b> ${total} resources\n`;
-  message += `📄 <b>Page:</b> ${page}\n\n`;
-  message += `<i>Tap any resource below to see details, download, or add to favorites.</i>\n\n`;
+ let message = `📚 <b>Resources Library</b>\n`;
+ message += `📊 <b>Total:</b> ${total} resources\n`;
+ message += `📄 <b>Page:</b> ${page}\n\n`;
+ message += `<i>Tap any resource below to see details, download, or add to favorites.</i>\n\n`;
+ message += `💡 <b>Quick Tips:</b>\n`;
+ message += `   • Use buttons to navigate between pages\n`;
+ message += `   • Tap a resource to view full details\n`;
+ message += `   • Save your favorites for quick access\n\n`;
+ message += `👇 <i>Choose a resource below:</i>\n`;
 
   // resources.forEach((resource, index) => {
   //   const number = (page - 1) * ITEMS_PER_PAGE + index + 1;
