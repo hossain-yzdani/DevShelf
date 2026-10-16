@@ -280,6 +280,7 @@ function formatResourceList(
   let message = `📚 <b>Resources Library</b>\n`;
   message += `📊 <b>Total:</b> ${total} resources\n`;
   message += `📄 <b>Page:</b> ${page}\n\n`;
+  message += `<i>Tap any resource below to see details, download, or add to favorites.</i>\n\n`;
 
   // resources.forEach((resource, index) => {
   //   const number = (page - 1) * ITEMS_PER_PAGE + index + 1;
