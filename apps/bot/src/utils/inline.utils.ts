@@ -60,11 +60,11 @@ export function buildSharedMessage(
 
   return (
     `${emoji} <b>${resource.name}</b>\n\n` +
-    `📝 ${resource.description}\n\n` +
+    // `📝 ${resource.description}\n\n` +
     `✍️ <b>Author:</b> ${resource.author}\n` +
     `📂 <b>Category:</b> ${resource.category?.name || "Unknown"}\n` +
     `📌 <b>Type:</b> ${label}\n\n` +
-    `📊 ❤️ ${resource.downloadsCount} • 📥 ${resource.downloadsCount}\n\n` +
+    `📊 ❤️ ${resource.favoritesCount} • 📥 ${resource.downloadsCount}\n\n` +
     `🔗 <a href="${deepLink}">Open in DevShelf</a>`
   );
 }
