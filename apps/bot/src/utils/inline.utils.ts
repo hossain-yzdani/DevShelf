@@ -56,7 +56,7 @@ export function buildSharedMessage(
 ): string {
   const emoji = getTypeEmoji(resource.type);
   const label = getTypeLabel(resource.type);
-  const deepLink = `https://t.me/${botUsername}?start=resource_${resource.slug}`;
+  const deepLink = `https://t.me/${botUsername}?start=view_${resource.slug}`;
 
   return (
     `${emoji} <b>${resource.name}</b>\n\n` +
@@ -73,7 +73,7 @@ export function buildSharedKeyboard(
   resource: Resource,
   botUsername: string,
 ): InlineKeyboard {
-  const deepLink = `https://t.me/${botUsername}?start=resource_${resource.slug}`;
+  const deepLink = `https://t.me/${botUsername}?start=view_${resource.slug}`;
 
   return new InlineKeyboard().url("📖 Open in Bot", deepLink);
 }

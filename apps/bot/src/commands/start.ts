@@ -10,7 +10,6 @@ import { mainKeyboard } from "../keyboards/main.keyboard";
 
 export async function registerStartCommand(bot: Bot) {
   bot.command("start", async (ctx) => {
-    // ─── ۱. ثبت‌نام کاربر ───
     const userData: Auth = {
       telegramId: ctx.from?.id,
       username: ctx.from?.username || undefined,
@@ -26,14 +25,13 @@ export async function registerStartCommand(bot: Bot) {
       logger.error(error);
     }
 
-    // ─── ۲. چک کردن Deep Link ───
     const payload = ctx.match?.trim();
 
-    if (payload && payload.startsWith("r_")) {
-      const id = payload.replace("r_", "");
+    if (payload && payload.startsWith("view_")) {
+      const slug = payload.replace("view_", "");
 
       try {
-        const resource = await ResourceService.getById(id);
+        const resource = await ResourceService.getBySlug(slug);
 
         if (resource) {
           const emoji = getTypeEmoji(resource.type);
@@ -56,7 +54,7 @@ export async function registerStartCommand(bot: Bot) {
             .text("❤️ Favorite", `favorite_${resource.slug}`)
             .danger()
             .row()
-            .text("🔙 Back to Main Menu", "back_main");
+            .text("🔙 Back", "main");
 
           if (resource.posterUrl) {
             await ctx.replyWithPhoto(resource.posterUrl, {
@@ -73,12 +71,11 @@ export async function registerStartCommand(bot: Bot) {
           return;
         }
       } catch (error) {
-        logger.error({ id, error }, "Failed to load resource from deep link");
+        logger.error({ slug, error }, "Failed to load resource from deep link");
         // continue to main menu
       }
     }
 
-    // ─── ۳. منوی اصلی (حالت پیش‌فرض) ───
     await ctx.reply(
       `<tg-emoji emoji-id="${STAR_ICON_ID}">⭐</tg-emoji> Welcome to <b>DevShelf</b>! \n\n` +
         `📚 Here you can find books about computer, programming and artificial intelligence.\n\n` +
