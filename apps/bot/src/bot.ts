@@ -21,6 +21,35 @@ registerErrorMiddleware(bot);
 
 registerKeyboardHandlers(bot);
 
+bot.on("inline_query", async (ctx) => {
+  const query = ctx.inlineQuery.query.trim();
+
+  const results = [
+    {
+      type: "article" as const,
+      id: "1",
+      title: "React Documentation",
+      description: "Official React documentation",
+      input_message_content: {
+        message_text: "https://react.dev",
+      },
+    },
+    {
+      type: "article" as const,
+      id: "2",
+      title: "NestJS Documentation",
+      description: "Official NestJS documentation",
+      input_message_content: {
+        message_text: "https://docs.nestjs.com",
+      },
+    },
+  ];
+
+  await ctx.answerInlineQuery(results, {
+    cache_time: 0,
+  });
+});
+
 process.on("SIGINT", () => {
   logger.info("🛑 Stopping bot...");
   bot.stop();
