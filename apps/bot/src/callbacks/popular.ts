@@ -34,7 +34,7 @@ export function registerPopularCallbacks(bot: Bot) {
             : resource.name;
 
         keyboard
-          .text(`${displayName}`, `view_${resource.slug}`)
+          .text(`⭐ ${displayName}`, `view_${resource.slug}`)
           .success()
           .row();
       });

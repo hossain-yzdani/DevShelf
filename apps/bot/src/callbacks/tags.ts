@@ -42,7 +42,7 @@ export function registerTagCallbacks(bot: Bot) {
       }
 
       keyboard.row();
-      keyboard.text("↩️ Back", "back");
+      keyboard.text("↩️ Back to Tags", "tags");
 
       await ctx.editMessageText(
         `🏷️ **Tag Resources**\n\n` +
