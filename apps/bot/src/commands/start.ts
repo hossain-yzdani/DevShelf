@@ -65,6 +65,7 @@ export async function registerStartCommand(bot: Bot) {
             parse_mode: "HTML",
           });
         }
+        return;
       } catch (error) {
         logger.error({ slug, error }, "Failed to load resource from deep link");
         // continue to main menu
