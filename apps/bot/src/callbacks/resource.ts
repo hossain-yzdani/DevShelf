@@ -281,14 +281,14 @@ function formatResourceList(
   message += `📊 <b>Total:</b> ${total} resources\n`;
   message += `📄 <b>Page:</b> ${page}\n\n`;
 
-  resources.forEach((resource, index) => {
-    const number = (page - 1) * ITEMS_PER_PAGE + index + 1;
-    const emoji = getTypeEmoji(resource.type);
+  // resources.forEach((resource, index) => {
+  //   const number = (page - 1) * ITEMS_PER_PAGE + index + 1;
+  //   const emoji = getTypeEmoji(resource.type);
 
-    message += `<b>${number}.</b> ${emoji} <b>${resource.name}</b>\n`;
-    message += `     ✍️ ${resource.author}\n`;
-    message += `     📥 ${resource.downloadsCount} | ❤️ ${resource.favoritesCount}\n\n`;
-  });
+  //   message += `<b>${number}.</b> ${emoji} <b>${resource.name}</b>\n`;
+  //   message += `     ✍️ ${resource.author}\n`;
+  //   message += `     📥 ${resource.downloadsCount} | ❤️ ${resource.favoritesCount}\n\n`;
+  // });
 
   return message;
 }
