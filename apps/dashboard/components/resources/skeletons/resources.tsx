@@ -1,42 +1,63 @@
 import { Skeleton } from "@/components/ui/skeleton/skeleton";
 
-interface GridModeSkeletonProps {
-  count?: number;
-}
-
-const GridModeSkeleton = ({ count = 3 }: GridModeSkeletonProps) => {
+const SettingsSkeleton = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {[...Array(count)].map((_, index) => (
-        <div
-          key={index}
-          className="bg-[#171717] rounded-xl border border-white/5 overflow-hidden flex flex-col"
-        >
-          <div className="p-5 pb-3 flex-1">
-            <div className="w-full aspect-video rounded-lg bg-[#0A0A0A] border border-white/5 mb-3 overflow-hidden">
-              <Skeleton className="w-full h-full bg-neutral-800" />
-            </div>
-
-            <Skeleton className="h-5 w-3/4 bg-neutral-800" />
-
-            <Skeleton className="h-4 w-1/2 bg-neutral-800 mt-1" />
-
-            <div className="flex items-center justify-between mt-3">
-              <Skeleton className="h-5 w-16 rounded-full bg-neutral-800" />
-              <Skeleton className="h-4 w-12 bg-neutral-800" />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1 p-3 border-t border-white/5 bg-[#0A0A0A]">
-            <Skeleton className="h-8 w-8 rounded-lg bg-neutral-800" />
-            <Skeleton className="h-8 w-8 rounded-lg bg-neutral-800" />
-            <div className="flex-1" />
-            <Skeleton className="h-8 w-8 rounded-lg bg-neutral-800" />
-          </div>
+    <div className="space-y-6">
+      {/* ─── Header ─── */}
+      <div className="flex justify-between items-center">
+        <div>
+          <Skeleton className="h-9 w-32 bg-neutral-800" />
+          <Skeleton className="h-4 w-56 bg-neutral-800 mt-2" />
         </div>
-      ))}
+        <Skeleton className="h-10 w-36 rounded-xl bg-neutral-800" />
+      </div>
+
+      {/* ─── Tabs ─── */}
+      <div className="flex gap-2 flex-wrap">
+        {[...Array(7)].map((_, index) => (
+          <Skeleton
+            key={index}
+            className="h-10 w-24 rounded-xl bg-neutral-800"
+          />
+        ))}
+      </div>
+
+      {/* ─── Content Card ─── */}
+      <div className="bg-[#171717] rounded-xl border border-white/5 p-6 space-y-6">
+        {/* Title */}
+        <Skeleton className="h-5 w-40 bg-neutral-800" />
+
+        {/* Fields */}
+        <div className="space-y-4">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="space-y-2">
+              <Skeleton className="h-4 w-28 bg-neutral-800" />
+              <Skeleton className="h-11 w-full rounded-xl bg-neutral-800" />
+            </div>
+          ))}
+        </div>
+
+        {/* Toggles */}
+        <div className="space-y-3">
+          {[...Array(3)].map((_, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 bg-[#0A0A0A] rounded-xl border border-white/5"
+            >
+              <div className="flex items-center gap-3">
+                <Skeleton className="w-5 h-5 rounded bg-neutral-800" />
+                <div className="space-y-1.5">
+                  <Skeleton className="h-4 w-32 bg-neutral-800" />
+                  <Skeleton className="h-3 w-48 bg-neutral-800" />
+                </div>
+              </div>
+              <Skeleton className="w-10 h-6 rounded-full bg-neutral-800" />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default GridModeSkeleton;
+export default SettingsSkeleton;

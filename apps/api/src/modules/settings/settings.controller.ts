@@ -5,22 +5,35 @@ import {
   Patch,
   Param,
   UseGuards,
+  Post,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { UpdateSettingDto } from './dto/update-setting.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { SettingsSeedService } from 'src/seeds/settings.seed';
 
 @ApiTags('Settings')
 @Controller('settings')
 export class SettingsController {
-  constructor(private readonly settingsService: SettingsService) {}
+  constructor(
+    private readonly settingsService: SettingsService,
+    private readonly settingsSeedService: SettingsSeedService
+  ) { }
 
   @Get()
   @ApiOperation({ summary: 'Get all settings (grouped)' })
   @UseGuards(AuthGuard)
   findAll() {
     return this.settingsService.findAll();
+  }
+
+  @Post('seed')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Seed default settings (admin only)' })
+  async seed() {
+    await this.settingsSeedService.seed();
+    return { message: 'Settings seeded successfully' };
   }
 
   @Get(':key')

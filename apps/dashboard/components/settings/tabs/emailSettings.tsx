@@ -1,17 +1,28 @@
 "use client";
 
-import { useState } from "react";
 import { Mail, Server, Send, User } from "lucide-react";
 
-export function EmailSettings() {
-  const [smtp, setSmtp] = useState({
-    host: "smtp.gmail.com",
-    port: "587",
-    username: "",
-    password: "",
-    fromEmail: "noreply@devshelf.ir",
-    fromName: "DevShelf",
-  });
+interface EmailSettingsProps {
+  settings: Record<string, any[]>;
+  getValue: (key: string, dbValue: any) => any;
+  setValue: (key: string, value: any) => void;
+}
+
+export function EmailSettings({
+  settings,
+  getValue,
+  setValue,
+}: EmailSettingsProps) {
+  const emailSettings = settings.email || [];
+
+  const findSetting = (key: string) =>
+    emailSettings.find((s: any) => s.key === key);
+
+  const getCurrentValue = (key: string) => {
+    const setting = findSetting(key);
+    if (!setting) return "";
+    return getValue(key, setting.value);
+  };
 
   const handleTestEmail = () => {
     alert("📧 ایمیل تست به آدرس شما ارسال شد!");
@@ -29,8 +40,8 @@ export function EmailSettings() {
           </label>
           <input
             type="text"
-            value={smtp.host}
-            onChange={(e) => setSmtp({ ...smtp, host: e.target.value })}
+            value={getCurrentValue("smtp_host")}
+            onChange={(e) => setValue("smtp_host", e.target.value)}
             className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition"
           />
         </div>
@@ -40,8 +51,8 @@ export function EmailSettings() {
           </label>
           <input
             type="text"
-            value={smtp.port}
-            onChange={(e) => setSmtp({ ...smtp, port: e.target.value })}
+            value={getCurrentValue("smtp_port")}
+            onChange={(e) => setValue("smtp_port", e.target.value)}
             className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition"
           />
         </div>
@@ -52,8 +63,8 @@ export function EmailSettings() {
           </label>
           <input
             type="text"
-            value={smtp.username}
-            onChange={(e) => setSmtp({ ...smtp, username: e.target.value })}
+            value={getCurrentValue("smtp_username")}
+            onChange={(e) => setValue("smtp_username", e.target.value)}
             className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition"
           />
         </div>
@@ -63,8 +74,8 @@ export function EmailSettings() {
           </label>
           <input
             type="password"
-            value={smtp.password}
-            onChange={(e) => setSmtp({ ...smtp, password: e.target.value })}
+            value={getCurrentValue("smtp_password")}
+            onChange={(e) => setValue("smtp_password", e.target.value)}
             className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition"
           />
         </div>
@@ -78,8 +89,8 @@ export function EmailSettings() {
           </label>
           <input
             type="email"
-            value={smtp.fromEmail}
-            onChange={(e) => setSmtp({ ...smtp, fromEmail: e.target.value })}
+            value={getCurrentValue("from_email")}
+            onChange={(e) => setValue("from_email", e.target.value)}
             className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition"
           />
         </div>
@@ -89,8 +100,8 @@ export function EmailSettings() {
           </label>
           <input
             type="text"
-            value={smtp.fromName}
-            onChange={(e) => setSmtp({ ...smtp, fromName: e.target.value })}
+            value={getCurrentValue("from_name")}
+            onChange={(e) => setValue("from_name", e.target.value)}
             className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition"
           />
         </div>

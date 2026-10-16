@@ -1,13 +1,28 @@
-// components/settings/AdvancedSettings.tsx
 "use client";
 
-import { useState } from "react";
-import { Code, AlertTriangle, RefreshCw, Trash2 } from "lucide-react";
+import { Code, AlertTriangle, Trash2 } from "lucide-react";
 
-export function AdvancedSettings() {
-  const [headerCode, setHeaderCode] = useState("<!-- Google Analytics -->");
-  const [footerCode, setFooterCode] = useState("");
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
+interface AdvancedSettingsProps {
+  settings: Record<string, any[]>;
+  getValue: (key: string, dbValue: any) => any;
+  setValue: (key: string, value: any) => void;
+}
+
+export function AdvancedSettings({
+  settings,
+  getValue,
+  setValue,
+}: AdvancedSettingsProps) {
+  const advancedSettings = settings.advanced || [];
+
+  const findSetting = (key: string) =>
+    advancedSettings.find((s: any) => s.key === key);
+
+  const getCurrentValue = (key: string) => {
+    const setting = findSetting(key);
+    if (!setting) return "";
+    return getValue(key, setting.value);
+  };
 
   const handleResetData = () => {
     if (
@@ -29,8 +44,8 @@ export function AdvancedSettings() {
           کد هدر
         </label>
         <textarea
-          value={headerCode}
-          onChange={(e) => setHeaderCode(e.target.value)}
+          value={getCurrentValue("header_code")}
+          onChange={(e) => setValue("header_code", e.target.value)}
           rows={3}
           placeholder="<!-- کدهای هدر -->"
           className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition font-mono text-sm"
@@ -46,8 +61,8 @@ export function AdvancedSettings() {
           کد فوتر
         </label>
         <textarea
-          value={footerCode}
-          onChange={(e) => setFooterCode(e.target.value)}
+          value={getCurrentValue("footer_code")}
+          onChange={(e) => setValue("footer_code", e.target.value)}
           rows={3}
           placeholder="<!-- کدهای فوتر -->"
           className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-2.5 text-[#F5F5F5] placeholder-gray-500 focus:border-white/20 focus:outline-none transition font-mono text-sm"
@@ -66,14 +81,18 @@ export function AdvancedSettings() {
           </div>
         </div>
         <button
-          onClick={() => setMaintenanceMode(!maintenanceMode)}
+          onClick={() =>
+            setValue("maintenance_mode", !getCurrentValue("maintenance_mode"))
+          }
           className={`w-10 h-6 rounded-full transition ${
-            maintenanceMode ? "bg-amber-500" : "bg-white/10"
+            getCurrentValue("maintenance_mode") ? "bg-amber-500" : "bg-white/10"
           }`}
         >
           <div
             className={`w-4 h-4 rounded-full bg-white transition-transform ${
-              maintenanceMode ? "translate-x-5" : "translate-x-0.5"
+              getCurrentValue("maintenance_mode")
+                ? "translate-x-5"
+                : "translate-x-0.5"
             }`}
           />
         </button>
