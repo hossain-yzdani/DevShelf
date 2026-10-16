@@ -4,7 +4,7 @@ import {
   Setting,
   SettingType,
   SettingGroup,
-} from '../../modules/settings/entities/setting.entity';
+} from '../modules/settings/entities/setting.entity';
 
 export async function seedSettings(dataSource: DataSource) {
   const settingRepo = dataSource.getRepository(Setting);
