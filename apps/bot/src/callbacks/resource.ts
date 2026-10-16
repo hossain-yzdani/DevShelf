@@ -181,7 +181,7 @@ export function registerResourceCallbacks(bot: Bot) {
   });
 }
 
-function formatResourceMessage(resource: Resource): string {
+export function formatResourceMessage(resource: Resource): string {
   const typeEmojis: Record<ResourceType, string> = {
     book: "📚",
     video: "🎬",
@@ -216,7 +216,7 @@ function formatResourceMessage(resource: Resource): string {
   );
 }
 
-async function showResourcesPage(ctx: any, page: number = 1) {
+export async function showResourcesPage(ctx: any, page: number = 1) {
   try {
     const { data: resources, meta } = await ResourceService.fetchResources(
       page,
@@ -272,7 +272,7 @@ async function showResourcesPage(ctx: any, page: number = 1) {
   }
 }
 
-function formatResourceList(
+export function formatResourceList(
   resources: Resource[],
   page: number,
   total: number,

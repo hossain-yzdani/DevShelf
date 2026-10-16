@@ -7,6 +7,9 @@ import { AuthService } from "../services/auth.service";
 import { ResourceService } from "../services/resource.service";
 import { getTypeEmoji } from "../utils/inline.utils";
 import { mainKeyboard } from "../keyboards/main.keyboard";
+import { FavoriteService } from "../services/favorite.service";
+import { formatResourceMessage } from "../callbacks/resource";
+import { buildResourceKeyboard } from "../keyboards/resource.keyboard";
 
 export async function registerStartCommand(bot: Bot) {
   bot.command("start", async (ctx) => {
@@ -27,48 +30,40 @@ export async function registerStartCommand(bot: Bot) {
 
     const payload = ctx.match?.trim();
 
+    if (!ctx.from?.id) {
+      await ctx.reply("❌ Unable to identify user.");
+      return;
+    }
+
     if (payload && payload.startsWith("view_")) {
       const slug = payload.replace("view_", "");
 
       try {
         const resource = await ResourceService.getBySlug(slug);
+        const telegramId = ctx.from?.id;
 
-        if (resource) {
-          const emoji = getTypeEmoji(resource.type);
+        const isFavorited = await FavoriteService.isFavorited(slug, telegramId);
 
-          const message =
-            `${emoji} <b>${resource.name}</b>\n\n` +
-            `📝 ${resource.description}\n\n` +
-            `✍️ <b>Author:</b> ${resource.author}\n` +
-            `📂 <b>Category:</b> ${resource.category?.name || "Unknown"}\n` +
-            `🏷️ <b>Tags:</b> ${
-              resource.tags?.map((t) => `#${t.name}`).join(" ") || "None"
-            }\n\n` +
-            `📊 <b>Statistics:</b>\n` +
-            `❤️ ${resource.favoritesCount} favorites\n` +
-            `📥 ${resource.downloadsCount} downloads`;
-
-          const keyboard = new InlineKeyboard()
-            .text("📥 Download", `download_${resource.slug}`)
-            .success()
-            .text("❤️ Favorite", `favorite_${resource.slug}`)
-            .danger()
-            .row()
-            .text("🔙 Back", "main");
-
-          if (resource.posterUrl) {
-            await ctx.replyWithPhoto(resource.posterUrl, {
-              caption: message,
-              parse_mode: "HTML",
-              reply_markup: keyboard,
-            });
-          } else {
-            await ctx.reply(message, {
-              parse_mode: "HTML",
-              reply_markup: keyboard,
-            });
-          }
+        if (!resource) {
+          await ctx.answerCallbackQuery("❌ Resource not found!");
           return;
+        }
+
+        const message = formatResourceMessage(resource);
+        const keyboard = buildResourceKeyboard(slug, isFavorited);
+
+        if (resource.posterUrl) {
+          await ctx.replyWithPhoto(resource.posterUrl, {
+            caption: message,
+            reply_markup: keyboard,
+            parse_mode: "HTML",
+          });
+          await ctx.deleteMessage();
+        } else {
+          await ctx.editMessageText(message, {
+            reply_markup: keyboard,
+            parse_mode: "HTML",
+          });
         }
       } catch (error) {
         logger.error({ slug, error }, "Failed to load resource from deep link");
