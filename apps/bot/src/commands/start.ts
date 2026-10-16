@@ -4,7 +4,6 @@ import { logger } from "../utils/logger";
 import { STAR_ICON_ID } from "../utils/icons";
 import { Auth } from "../../../../packages/types/auth";
 import { AuthService } from "../services/auth.service";
-import buttonKeyboard from "../keyboards/button.keyboard";
 
 export async function registerStartCommand(bot: Bot) {
 bot.command("start", async (ctx) => {
@@ -29,7 +28,7 @@ bot.command("start", async (ctx) => {
       `<b>start:</b> /start \n<b>about:</b> /about \n<b>help:</b> /help\n\n` +
       `🔍 Use below menu to find your book:`,
     {
-      reply_markup: buttonKeyboard,
+      reply_markup: mainKeyboard,
       parse_mode: "HTML",
     },
   );
