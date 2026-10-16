@@ -311,6 +311,7 @@ function buildResourceListKeyboard(
 
     keyboard
       .text(`${number}. ${emoji} ${displayName}`, `view_${resource.slug}`)
+      .success()
       .row();
   });
 
