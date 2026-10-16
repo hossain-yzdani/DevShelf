@@ -26,10 +26,16 @@ export function registerPopularCallbacks(bot: Bot) {
 
       const keyboard = new InlineKeyboard();
 
-      resources.forEach((resource: Resource) => {
+      resources.forEach((resource, index) => {
+        const maxLength = 28;
+        const displayName =
+          resource.name.length > maxLength
+            ? resource.name.substring(0, maxLength) + "…"
+            : resource.name;
+
         keyboard
-          .text(`⭐ ${resource.name}`, `view_${resource.slug}`)
-          .primary()
+          .text(`${displayName}`, `view_${resource.slug}`)
+          .success()
           .row();
       });
 
