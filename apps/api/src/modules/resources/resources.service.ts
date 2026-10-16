@@ -198,7 +198,7 @@ export class ResourcesService {
   async searchResources(
     query: string,
     limit: number = 10,
-  ): Promise<Resource[]> {
+  ): Promise<ResourceResponseDto[]> {
     const search = `%${query.trim()}%`;
 
     const resources = await this.resourceRepository
@@ -214,7 +214,7 @@ export class ResourcesService {
       .take(limit)
       .getMany();
 
-    return resources;
+    return ResourceMapper.toResponseDtoArray(resources);
   }
 
   async advancedSearch(
