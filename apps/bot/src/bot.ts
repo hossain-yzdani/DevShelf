@@ -6,49 +6,18 @@ import { registerCallbacks } from "./callbacks";
 import { registerMiddlewares } from "./middlewares";
 import { registerErrorMiddleware } from "./middlewares/error.middleware";
 import { registerKeyboardHandlers } from "./handlers/keyboard.handler";
+import { registerInlineHandlers } from "./handlers/inline.handler";
 
 logger.info("🚀 Starting DevShelf Bot...");
 
 const bot = new Bot(env.BOT_TOKEN);
 
 registerMiddlewares(bot);
-
 registerCommands(bot);
-
 registerCallbacks(bot);
-
 registerErrorMiddleware(bot);
-
+registerInlineHandlers(bot);
 registerKeyboardHandlers(bot);
-
-bot.on("inline_query", async (ctx) => {
-  const query = ctx.inlineQuery.query.trim();
-
-  const results = [
-    {
-      type: "article" as const,
-      id: "1",
-      title: "React Documentation",
-      description: "Official React documentation",
-      input_message_content: {
-        message_text: "https://react.dev",
-      },
-    },
-    {
-      type: "article" as const,
-      id: "2",
-      title: "NestJS Documentation",
-      description: "Official NestJS documentation",
-      input_message_content: {
-        message_text: "https://docs.nestjs.com",
-      },
-    },
-  ];
-
-  await ctx.answerInlineQuery(results, {
-    cache_time: 0,
-  });
-});
 
 process.on("SIGINT", () => {
   logger.info("🛑 Stopping bot...");
