@@ -5,6 +5,7 @@ import { registerCommands } from "./commands";
 import { registerCallbacks } from "./callbacks";
 import { registerMiddlewares } from "./middlewares";
 import { registerErrorMiddleware } from "./middlewares/error.middleware";
+import { registerKeyboardHandlers } from "./handlers/keyboard.handler";
 
 logger.info("🚀 Starting DevShelf Bot...");
 
@@ -17,6 +18,8 @@ registerCommands(bot);
 registerCallbacks(bot);
 
 registerErrorMiddleware(bot);
+
+registerKeyboardHandlers(bot);
 
 process.on("SIGINT", () => {
   logger.info("🛑 Stopping bot...");
