@@ -17,6 +17,7 @@ import { UploadsModule } from './modules/uoload/upload.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SettingsModule } from './modules/settings/settings.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { join } from 'path';
     AuthModule,
     AnalyticsModule,
     UploadsModule,
+    SettingsModule,
   ],
 })
 export class AppModule {}
