@@ -1,4 +1,3 @@
-// components/settings/settingsSkeleton.tsx
 export default function SettingsSkeleton() {
   return (
     <div className="space-y-6">

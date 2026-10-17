@@ -7,7 +7,6 @@ import TabsSetting from "@/components/settings/tabs";
 
 import { useSettings } from "@/hooks/useSettings";
 
-
 import { GeneralSettings } from "@/components/settings/tabs/generalSettings";
 import { AppearanceSettings } from "@/components/settings/tabs/appearanceSettings";
 import { ResourceSettings } from "@/components/settings/tabs/resourceSettings";
@@ -124,3 +123,4 @@ export default function SettingsPage() {
     </div>
   );
 }
+ 

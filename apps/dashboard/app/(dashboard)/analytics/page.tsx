@@ -120,7 +120,7 @@ export default function AnalyticsPage() {
   if (isLoading || !data) {
     return (
       <>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
           <div className="flex-4">
             <h1 className="text-3xl font-bold text-[#F5F5F5]">آمار و تحلیل</h1>
             <p className="text-gray-400 text-sm mt-1">
