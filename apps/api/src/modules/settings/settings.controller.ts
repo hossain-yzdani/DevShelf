@@ -18,8 +18,8 @@ import { SettingsSeedService } from 'src/seeds/settings.seed';
 export class SettingsController {
   constructor(
     private readonly settingsService: SettingsService,
-    private readonly settingsSeedService: SettingsSeedService
-  ) { }
+    private readonly settingsSeedService: SettingsSeedService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all settings (grouped)' })
@@ -28,7 +28,7 @@ export class SettingsController {
     return this.settingsService.findAll();
   }
 
-  @Post('seed')
+  @Get('seed')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Seed default settings (admin only)' })
   async seed() {
