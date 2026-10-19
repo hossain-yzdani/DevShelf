@@ -10,6 +10,7 @@ import { mainKeyboard } from "../keyboards/main.keyboard";
 import { FavoriteService } from "../services/favorite.service";
 import { formatResourceMessage } from "../callbacks/resource";
 import { buildResourceKeyboard } from "../keyboards/resource.keyboard";
+import buttonKeyboard from "../keyboards/button.keyboard";
 
 export async function registerStartCommand(bot: Bot) {
   bot.command("start", async (ctx) => {
@@ -78,7 +79,7 @@ export async function registerStartCommand(bot: Bot) {
         `<b>start:</b> /start \n<b>about:</b> /about \n<b>help:</b> /help\n\n` +
         `🔍 Use below menu to find your book:`,
       {
-        reply_markup: mainKeyboard,
+        reply_markup: buttonKeyboard,
         parse_mode: "HTML",
       },
     );
