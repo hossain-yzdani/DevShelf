@@ -3,25 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton/skeleton";
 const SettingsSkeleton = () => {
   return (
     <div className="space-y-6">
-      {/* ─── Header ─── */}
-      <div className="flex justify-between items-center">
-        <div>
-          <Skeleton className="h-9 w-32 bg-neutral-800" />
-          <Skeleton className="h-4 w-56 bg-neutral-800 mt-2" />
-        </div>
-        <Skeleton className="h-10 w-36 rounded-xl bg-neutral-800" />
-      </div>
-
-      {/* ─── Tabs ─── */}
-      <div className="flex gap-2 flex-wrap">
-        {[...Array(7)].map((_, index) => (
-          <Skeleton
-            key={index}
-            className="h-10 w-24 rounded-xl bg-neutral-800"
-          />
-        ))}
-      </div>
-
       {/* ─── Content Card ─── */}
       <div className="bg-[#171717] rounded-xl border border-white/5 p-6 space-y-6">
         {/* Title */}
