@@ -10,6 +10,5 @@ const buttonKeyboard = new Keyboard()
   .text("📥 My Downloads")
   .text("👤 My Account")
   .resized()
-  .persistent()
 
 export default buttonKeyboard;
