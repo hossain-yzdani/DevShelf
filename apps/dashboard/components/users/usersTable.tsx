@@ -71,6 +71,12 @@ const UsersTable = ({
                     آخرین فعالیت
                   </th>
                   <th className="px-4 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    علاقه مندی ها
+                  </th>
+                  <th className="px-4 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    دانلود ها
+                  </th>
+                  <th className="px-4 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">
                     عملیات
                   </th>
                 </tr>
@@ -113,6 +119,12 @@ const UsersTable = ({
                       >
                         {statusLabels[`${user.isActive}`]}
                       </button>
+                    </td>
+                    <td className="px-4 py-3">
+                      {user.favoritesCount}
+                    </td>
+                    <td className="px-4 py-3">
+                      {user.downloadsCount}
                     </td>
                     <td className="px-4 py-3 text-gray-400 text-xs">
                       {new Date(user.updatedAt).toLocaleDateString("fa-IR")}
