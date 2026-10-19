@@ -64,7 +64,7 @@ export default function DashboardPage() {
         title="کتابخانه"
         description="مدیریت منابع آموزشی و کتاب‌های برنامه‌نویسی"
         button="منبع جدید"
-        is={false}
+        is={true}
       />
 
     
