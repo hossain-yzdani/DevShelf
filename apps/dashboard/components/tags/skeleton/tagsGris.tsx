@@ -4,7 +4,7 @@ interface TagsGridSkeletonProps {
   count?: number;
 }
 
-const TagsGridSkeleton = ({ count = 8 }: TagsGridSkeletonProps) => {
+const TagsGridSkeleton = ({ count = 16 }: TagsGridSkeletonProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {[...Array(count)].map((_, index) => (

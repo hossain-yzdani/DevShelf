@@ -4,7 +4,7 @@ interface CategoriesGridSkeletonProps {
   count?: number;
 }
 
-const CategoriesGridSkeleton = ({ count = 4 }: CategoriesGridSkeletonProps) => {
+const CategoriesGridSkeleton = ({ count = 8 }: CategoriesGridSkeletonProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {[...Array(count)].map((_, index) => (
