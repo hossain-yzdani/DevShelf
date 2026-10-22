@@ -63,9 +63,8 @@ export function buildSharedMessage(
     // `📝 ${resource.description}\n\n` +
     `✍️ <b>Author:</b> ${resource.author}\n` +
     `📂 <b>Category:</b> ${resource.category?.name || "Unknown"}\n` +
-    `📌 <b>Type:</b> ${label}\n\n` +
-    `❤️ ${resource.favoritesCount}\n\n` +
-    `📥 ${resource.downloadsCount}\n\n` +
+    `📌 <b>Type:</b> ${label}\n` +
+    `📥 <b>Downloads:</b>${resource.downloadsCount} downloads \n\n` +
     `🔗 <a href="${deepLink}">Open in DevShelf</a>`
   );
 }
