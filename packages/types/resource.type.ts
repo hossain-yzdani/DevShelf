@@ -22,12 +22,13 @@ export interface Resource {
   fileUrl: string;
   posterUrl: string;
   author: string;
-  favoritesCount: number;
-  downloadsCount: number;
   category: Category;
   tags: Tag[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  
+  favoritesCount?: number;
+  downloadsCount?: number;
 }
 
 export interface ResourceFilters {

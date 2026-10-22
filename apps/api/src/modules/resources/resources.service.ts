@@ -205,6 +205,8 @@ export class ResourcesService {
       .createQueryBuilder('resource')
       .leftJoinAndSelect('resource.category', 'category')
       .leftJoinAndSelect('resource.tags', 'tags')
+      .leftJoinAndSelect('resource.favorites', 'favorites')
+      .leftJoinAndSelect('resource.downloads', 'downloads')
       .where('resource.name ILIKE :search', { search })
       .orWhere('resource.description ILIKE :search', { search })
       .orWhere('resource.author ILIKE :search', { search })

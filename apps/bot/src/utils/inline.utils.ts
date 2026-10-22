@@ -64,7 +64,8 @@ export function buildSharedMessage(
     `✍️ <b>Author:</b> ${resource.author}\n` +
     `📂 <b>Category:</b> ${resource.category?.name || "Unknown"}\n` +
     `📌 <b>Type:</b> ${label}\n\n` +
-    `📊 ❤️ ${resource.favoritesCount} • 📥 ${resource.downloadsCount}\n\n` +
+    `❤️ ${resource.favoritesCount}\n\n` +
+    `📥 ${resource.downloadsCount}\n\n` +
     `🔗 <a href="${deepLink}">Open in DevShelf</a>`
   );
 }
@@ -75,7 +76,7 @@ export function buildSharedKeyboard(
 ): InlineKeyboard {
   const deepLink = `https://t.me/${botUsername}?start=view_${resource.slug}`;
 
-  return new InlineKeyboard().url("📖 Open in Bot", deepLink);
+  return new InlineKeyboard().url("📖 Open in Bot", deepLink).success();
 }
 
 export function buildEmptyResult(): InlineQueryResultArticle {
