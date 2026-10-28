@@ -1,5 +1,5 @@
 import { InlineKeyboard } from "grammy";
-import { InlineQueryResultArticle } from "grammy/types";
+import { InlineQueryResultArticle, InlineQueryResultPhoto } from "grammy/types";
 import { Resource } from "../../../../packages/types/resource.type";
 
 export const INLINE_RESULTS_LIMIT = 20;
@@ -30,22 +30,23 @@ export function getTypeLabel(type: string): string {
 export function buildInlineResult(
   resource: Resource,
   botUsername: string,
-): InlineQueryResultArticle {
+): InlineQueryResultPhoto {
   const emoji = getTypeEmoji(resource.type);
   const label = getTypeLabel(resource.type);
 
+  const securePosterUrl =
+    resource.posterUrl?.replace("http://", "https://") ||
+    "https://your-domain.com/default.jpg";
+
   return {
-    type: "article",
+    type: "photo",
     id: resource.id,
+    photo_url: resource.posterUrl,
+    thumbnail_url: securePosterUrl,
     title: `${emoji} ${resource.name}`,
     description: `${label} • ${resource.author}`,
-    thumbnail_url: resource.posterUrl || undefined,
-    thumbnail_width: 200,
-    thumbnail_height: 200,
-    input_message_content: {
-      message_text: buildSharedMessage(resource, botUsername),
-      parse_mode: "HTML",
-    },
+    caption: buildSharedMessage(resource, botUsername),
+    parse_mode: "HTML",
     reply_markup: buildSharedKeyboard(resource, botUsername),
   };
 }
@@ -64,8 +65,7 @@ export function buildSharedMessage(
     `✍️ <b>Author:</b> ${resource.author}\n` +
     `📂 <b>Category:</b> ${resource.category?.name || "Unknown"}\n` +
     `📌 <b>Type:</b> ${label}\n` +
-    `📥 <b>Downloads:</b> ${resource.downloadsCount} downloads \n\n` +
-    `🔗 <a href="${deepLink}">Open in DevShelf</a>`
+    `📥 <b>Downloads:</b> ${resource.downloadsCount} downloads \n\n`
   );
 }
 
